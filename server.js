@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
-const sqlite3 = require('sqlite3').verbose();
+const { db, initDatabase } = require('./db');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -12,43 +12,10 @@ app.use(express.json());
 app.use(express.static('public'));
 
 // 数据库初始化
-const db = new sqlite3.Database('./memearena.db');
-
-// 创建表
-db.serialize(() => {
-  db.run(`CREATE TABLE IF NOT EXISTS memes (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    title TEXT NOT NULL,
-    image_url TEXT NOT NULL,
-    elo_score INTEGER DEFAULT 1500,
-    wins INTEGER DEFAULT 0,
-    losses INTEGER DEFAULT 0,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-  )`);
-
-  db.run(`CREATE TABLE IF NOT EXISTS battles (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    meme1_id INTEGER NOT NULL,
-    meme2_id INTEGER NOT NULL,
-    winner_id INTEGER NOT NULL,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (meme1_id) REFERENCES memes (id),
-    FOREIGN KEY (meme2_id) REFERENCES memes (id),
-    FOREIGN KEY (winner_id) REFERENCES memes (id)
-  )`);
-
-  // 插入测试数据
-  db.get("SELECT COUNT(*) as count FROM memes", (err, row) => {
-    if (row.count === 0) {
-      const stmt = db.prepare("INSERT INTO memes (title, image_url) VALUES (?, ?)");
-      stmt.run("Distracted Boyfriend", "https://i.imgflip.com/1ur9b0.jpg");
-      stmt.run("Drake Hotline Bling", "https://i.imgflip.com/2wifvo.jpg");
-      stmt.run("Two Buttons", "https://i.imgflip.com/1otk96.jpg");
-      stmt.run("Change My Mind", "https://i.imgflip.com/24y43o.jpg");
-      stmt.run("Mocking Spongebob", "https://i.imgflip.com/1otpo4.jpg");
-      stmt.finalize();
-    }
-  });
+initDatabase().then(() => {
+  console.log('Database initialized');
+}).catch(err => {
+  console.error('Database initialization failed:', err);
 });
 
 // 健康检查
@@ -58,18 +25,27 @@ app.get('/health', (req, res) => {
 
 // API 路由
 // 获取随机一对 meme 进行对战
-app.get('/api/battle-pair', (req, res) => {
-  db.all("SELECT * FROM memes ORDER BY RANDOM() LIMIT 2", (err, rows) => {
-    if (err) {
-      res.status(500).json({ error: err.message });
-      return;
+app.get('/api/battle-pair', async (req, res) => {
+  try {
+    if (db.type === 'postgresql') {
+      const result = await db.query('SELECT * FROM memes ORDER BY RANDOM() LIMIT 2');
+      res.json(result.rows);
+    } else {
+      db.all("SELECT * FROM memes ORDER BY RANDOM() LIMIT 2", (err, rows) => {
+        if (err) {
+          res.status(500).json({ error: err.message });
+          return;
+        }
+        res.json(rows);
+      });
     }
-    res.json(rows);
-  });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 });
 
 // 提交对战结果
-app.post('/api/battle-result', (req, res) => {
+app.post('/api/battle-result', async (req, res) => {
   const { meme1_id, meme2_id, winner_id } = req.body;
   
   if (!meme1_id || !meme2_id || !winner_id) {
@@ -77,54 +53,89 @@ app.post('/api/battle-result', (req, res) => {
     return;
   }
 
-  // 记录对战
-  db.run(
-    "INSERT INTO battles (meme1_id, meme2_id, winner_id) VALUES (?, ?, ?)",
-    [meme1_id, meme2_id, winner_id],
-    (err) => {
-      if (err) {
-        res.status(500).json({ error: err.message });
-        return;
-      }
+  try {
+    if (db.type === 'postgresql') {
+      // PostgreSQL 版本
+      await db.query(
+        'INSERT INTO battles (meme1_id, meme2_id, winner_id) VALUES ($1, $2, $3)',
+        [meme1_id, meme2_id, winner_id]
+      );
 
-      // 更新 ELO 分数（简化版）
+      // 更新 ELO 分数
       const k = 32;
       const winner = winner_id === meme1_id ? meme1_id : meme2_id;
       const loser = winner_id === meme1_id ? meme2_id : meme1_id;
 
-      // 获取当前分数
-      db.get("SELECT elo_score FROM memes WHERE id = ?", [winner], (err, winnerRow) => {
-        db.get("SELECT elo_score FROM memes WHERE id = ?", [loser], (err, loserRow) => {
-          const winnerScore = winnerRow.elo_score;
-          const loserScore = loserRow.elo_score;
+      const winnerResult = await db.query('SELECT elo_score FROM memes WHERE id = $1', [winner]);
+      const loserResult = await db.query('SELECT elo_score FROM memes WHERE id = $1', [loser]);
 
-          // 计算预期胜率
-          const expectedWinner = 1 / (1 + Math.pow(10, (loserScore - winnerScore) / 400));
-          const expectedLoser = 1 - expectedWinner;
+      const winnerScore = winnerResult.rows[0].elo_score;
+      const loserScore = loserResult.rows[0].elo_score;
 
-          // 更新分数
-          const newWinnerScore = Math.round(winnerScore + k * (1 - expectedWinner));
-          const newLoserScore = Math.round(loserScore + k * (0 - expectedLoser));
+      const expectedWinner = 1 / (1 + Math.pow(10, (loserScore - winnerScore) / 400));
+      const newWinnerScore = Math.round(winnerScore + k * (1 - expectedWinner));
+      const newLoserScore = Math.round(loserScore + k * (0 - expectedWinner));
 
-          db.run("UPDATE memes SET elo_score = ?, wins = wins + 1 WHERE id = ?", [newWinnerScore, winner]);
-          db.run("UPDATE memes SET elo_score = ?, losses = losses + 1 WHERE id = ?", [newLoserScore, loser]);
+      await db.query('UPDATE memes SET elo_score = $1, wins = wins + 1 WHERE id = $2', [newWinnerScore, winner]);
+      await db.query('UPDATE memes SET elo_score = $1, losses = losses + 1 WHERE id = $2', [newLoserScore, loser]);
 
-          res.json({ success: true });
-        });
-      });
+      res.json({ success: true });
+    } else {
+      // SQLite 版本（原有代码）
+      db.run(
+        "INSERT INTO battles (meme1_id, meme2_id, winner_id) VALUES (?, ?, ?)",
+        [meme1_id, meme2_id, winner_id],
+        (err) => {
+          if (err) {
+            res.status(500).json({ error: err.message });
+            return;
+          }
+
+          const k = 32;
+          const winner = winner_id === meme1_id ? meme1_id : meme2_id;
+          const loser = winner_id === meme1_id ? meme2_id : meme1_id;
+
+          db.get("SELECT elo_score FROM memes WHERE id = ?", [winner], (err, winnerRow) => {
+            db.get("SELECT elo_score FROM memes WHERE id = ?", [loser], (err, loserRow) => {
+              const winnerScore = winnerRow.elo_score;
+              const loserScore = loserRow.elo_score;
+
+              const expectedWinner = 1 / (1 + Math.pow(10, (loserScore - winnerScore) / 400));
+              const newWinnerScore = Math.round(winnerScore + k * (1 - expectedWinner));
+              const newLoserScore = Math.round(loserScore + k * (0 - expectedWinner));
+
+              db.run("UPDATE memes SET elo_score = ?, wins = wins + 1 WHERE id = ?", [newWinnerScore, winner]);
+              db.run("UPDATE memes SET elo_score = ?, losses = losses + 1 WHERE id = ?", [newLoserScore, loser]);
+
+              res.json({ success: true });
+            });
+          });
+        }
+      );
     }
-  );
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 });
 
 // 获取排行榜
-app.get('/api/leaderboard', (req, res) => {
-  db.all("SELECT * FROM memes ORDER BY elo_score DESC", (err, rows) => {
-    if (err) {
-      res.status(500).json({ error: err.message });
-      return;
+app.get('/api/leaderboard', async (req, res) => {
+  try {
+    if (db.type === 'postgresql') {
+      const result = await db.query('SELECT * FROM memes ORDER BY elo_score DESC');
+      res.json(result.rows);
+    } else {
+      db.all("SELECT * FROM memes ORDER BY elo_score DESC", (err, rows) => {
+        if (err) {
+          res.status(500).json({ error: err.message });
+          return;
+        }
+        res.json(rows);
+      });
     }
-    res.json(rows);
-  });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 });
 
 // 主页

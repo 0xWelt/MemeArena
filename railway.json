@@ -1,5 +1,5 @@
 {
-  "build": "npm install",
+  "build": "npm install && npm run build",
   "start": "node server.js",
   "healthcheckPath": "/health",
   "restartPolicyType": "ON_FAILURE"

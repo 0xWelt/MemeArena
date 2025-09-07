@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meme Arena - 表情包竞技场</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .battle-container {
+            display: flex;
+            gap: 40px;
+            margin-bottom: 40px;
+            align-items: center;
+        }
+
+        .meme-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 300px;
+            text-align: center;
+        }
+
+        .meme-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+
+        .meme-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .meme-card h3 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .vs {
+            font-size: 2rem;
+            color: white;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .stats {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            max-width: 800px;
+            width: 100%;
+        }
+
+        .stats h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .leaderboard {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .leaderboard-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .loading {
+            text-align: center;
+            color: white;
+            font-size: 1.2rem;
+            margin: 40px 0;
+        }
+
+        .error {
+            background: #ff6b6b;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .battle-container {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .meme-card {
+                width: 280px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🎭 Meme Arena</h1>
+        <p>选择你更喜欢的表情包，帮助建立最权威的 meme 排行榜！</p>
+    </div>
+
+    <div id="battle-container" class="battle-container">
+        <div class="loading">加载中...</div>
+    </div>
+
+    <div class="stats">
+        <h2>🏆 排行榜</h2>
+        <div id="leaderboard" class="leaderboard">
+            <div class="loading">加载中...</div>
+        </div>
+    </div>
+
+    <script>
+        let currentBattle = null;
+
+        // 获取对战组合
+        async function loadBattlePair() {
+            try {
+                const response = await fetch('/api/battle-pair');
+                const memes = await response.json();
+                
+                if (memes.length !== 2) {
+                    throw new Error('无法加载对战组合');
+                }
+
+                currentBattle = memes;
+                displayBattlePair(memes);
+            } catch (error) {
+                document.getElementById('battle-container').innerHTML = 
+                    `<div class="error">加载失败: ${error.message}</div>`;
+            }
+        }
+
+        // 显示对战组合
+        function displayBattlePair(memes) {
+            const container = document.getElementById('battle-container');
+            container.innerHTML = `
+                <div class="meme-card" onclick="submitBattle(${memes[0].id})">
+                    <img src="${memes[0].image_url}" alt="${memes[0].title}">
+                    <h3>${memes[0].title}</h3>
+                    <p>ELO: ${memes[0].elo_score}</p>
+                </div>
+                <div class="vs">VS</div>
+                <div class="meme-card" onclick="submitBattle(${memes[1].id})">
+                    <img src="${memes[1].image_url}" alt="${memes[1].title}">
+                    <h3>${memes[1].title}</h3>
+                    <p>ELO: ${memes[1].elo_score}</p>
+                </div>
+            `;
+        }
+
+        // 提交对战结果
+        async function submitBattle(winnerId) {
+            if (!currentBattle) return;
+
+            try {
+                const response = await fetch('/api/battle-result', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        meme1_id: currentBattle[0].id,
+                        meme2_id: currentBattle[1].id,
+                        winner_id: winnerId
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error('提交失败');
+                }
+
+                // 重新加载对战组合和排行榜
+                loadBattlePair();
+                loadLeaderboard();
+            } catch (error) {
+                alert('提交失败: ' + error.message);
+            }
+        }
+
+        // 加载排行榜
+        async function loadLeaderboard() {
+            try {
+                const response = await fetch('/api/leaderboard');
+                const memes = await response.json();
+                displayLeaderboard(memes);
+            } catch (error) {
+                document.getElementById('leaderboard').innerHTML = 
+                    `<div class="error">加载失败: ${error.message}</div>`;
+            }
+        }
+
+        // 显示排行榜
+        function displayLeaderboard(memes) {
+            const leaderboard = document.getElementById('leaderboard');
+            leaderboard.innerHTML = memes.map((meme, index) => `
+                <div class="leaderboard-item">
+                    <div>
+                        <strong>#${index + 1}</strong> ${meme.title}
+                    </div>
+                    <div>
+                        <span style="margin-right: 15px;">ELO: ${meme.elo_score}</span>
+                        <span style="color: #28a745;">胜: ${meme.wins}</span>
+                        <span style="color: #dc3545; margin-left: 10px;">负: ${meme.losses}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // 页面加载时初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            loadBattlePair();
+            loadLeaderboard();
+        });
+    </script>
+</body>
+</html>

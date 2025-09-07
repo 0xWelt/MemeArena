@@ -1,0 +1,6 @@
+{
+  "build": "npm install",
+  "start": "node server.js",
+  "healthcheckPath": "/health",
+  "restartPolicyType": "ON_FAILURE"
+}

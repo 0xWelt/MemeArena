@@ -28,10 +28,10 @@ app.get('/health', (req, res) => {
 app.get('/api/battle-pair', async (req, res) => {
   try {
     if (db.type === 'postgresql') {
-      const result = await db.query('SELECT * FROM memes ORDER BY RANDOM() LIMIT 2');
+      const result = await db.query('SELECT id, name as title, cover as image_url, elo_score, wins, losses FROM memes ORDER BY RANDOM() LIMIT 2');
       res.json(result.rows);
     } else {
-      db.all("SELECT * FROM memes ORDER BY RANDOM() LIMIT 2", (err, rows) => {
+      db.all("SELECT id, name as title, cover as image_url, elo_score, wins, losses FROM memes ORDER BY RANDOM() LIMIT 2", (err, rows) => {
         if (err) {
           res.status(500).json({ error: err.message });
           return;
@@ -122,10 +122,10 @@ app.post('/api/battle-result', async (req, res) => {
 app.get('/api/leaderboard', async (req, res) => {
   try {
     if (db.type === 'postgresql') {
-      const result = await db.query('SELECT * FROM memes ORDER BY elo_score DESC');
+      const result = await db.query('SELECT id, name as title, cover as image_url, elo_score, wins, losses FROM memes ORDER BY elo_score DESC');
       res.json(result.rows);
     } else {
-      db.all("SELECT * FROM memes ORDER BY elo_score DESC", (err, rows) => {
+      db.all("SELECT id, name as title, cover as image_url, elo_score, wins, losses FROM memes ORDER BY elo_score DESC", (err, rows) => {
         if (err) {
           res.status(500).json({ error: err.message });
           return;

@@ -1,4 +1,12 @@
-require('dotenv').config();
+const fs = require('fs');
+const path = require('path');
+
+// 只在 .env 文件存在时加载
+const envPath = path.join(__dirname, '.env');
+if (fs.existsSync(envPath)) {
+  require('dotenv').config();
+}
+
 const sqlite3 = require('sqlite3').verbose();
 const { Pool } = require('pg');
 
@@ -30,12 +38,14 @@ async function initDatabase() {
     await db.query(`
       CREATE TABLE IF NOT EXISTS memes (
         id SERIAL PRIMARY KEY,
-        title VARCHAR(255) NOT NULL,
-        image_url VARCHAR(500) NOT NULL,
+        name VARCHAR(255) NOT NULL,
+        cover VARCHAR(500) NOT NULL,
+        description TEXT,
         elo_score INTEGER DEFAULT 1500,
         wins INTEGER DEFAULT 0,
         losses INTEGER DEFAULT 0,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       )
     `);
 
@@ -63,10 +73,10 @@ async function initDatabase() {
         ['Mocking Spongebob', 'https://i.imgflip.com/1otpo4.jpg']
       ];
 
-      for (const [title, image_url] of testMemes) {
+      for (const [name, cover] of testMemes) {
         await db.query(
-          'INSERT INTO memes (title, image_url) VALUES ($1, $2)',
-          [title, image_url]
+          'INSERT INTO memes (name, cover) VALUES ($1, $2)',
+          [name, cover]
         );
       }
     }

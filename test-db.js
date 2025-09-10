@@ -1,4 +1,12 @@
-require('dotenv').config();
+const fs = require('fs');
+const path = require('path');
+
+// 只在 .env 文件存在时加载
+const envPath = path.join(__dirname, '.env');
+if (fs.existsSync(envPath)) {
+  require('dotenv').config();
+}
+
 const { Pool } = require('pg');
 
 async function testDatabaseConnection() {
@@ -43,12 +51,12 @@ async function testDatabaseConnection() {
       console.log(`📊 当前数据: ${count} 条记录, 最大ID: ${max_id || '无'}`);
       
       if (count > 0) {
-        const sampleResult = await client.query('SELECT id, title, image_url, elo_score FROM memes LIMIT 1');
+        const sampleResult = await client.query('SELECT id, name, cover, elo_score FROM memes LIMIT 1');
         const meme = sampleResult.rows[0];
         console.log('🎯 示例数据:', {
           id: meme.id,
-          title: meme.title,
-          image_url: meme.image_url.substring(0, 50) + '...',
+          name: meme.name,
+          cover: meme.cover ? meme.cover.substring(0, 50) + '...' : '无封面',
           elo_score: meme.elo_score
         });
       }

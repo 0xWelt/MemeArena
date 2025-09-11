@@ -30,10 +30,21 @@ export function Leaderboard({ memes }: LeaderboardProps) {
                 src={meme.cover}
                 alt={meme.name}
                 className="w-12 h-12 object-cover rounded-lg"
+                onError={(e) => {
+                  console.error('排行榜图片加载失败:', meme.cover);
+                  e.currentTarget.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDgiIGhlaWdodD0iNDgiIHZpZXdCb3g9IjAgMCA0OCA0OCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjQ4IiBoZWlnaHQ9IjQ4IiBmaWxsPSIjRjNGNEY2Ii8+CjxwYXRoIGQ9Ik0yNCAxMkMyOC40MTggMTIgMzIgMTUuNTgyIDMyIDIwQzMyIDI0LjQxOCAyOC40MTggMjggMjQgMjhDMTkuNTgyIDI4IDE2IDI0LjQxOCAxNiAyMEMxNiAxNS41ODIgMTkuNTgyIDEyIDI0IDEyWiIgZmlsbD0iIzlCOUI5QiIvPgo8L3N2Zz4K';
+                }}
               />
-              <span className="font-semibold text-gray-800 dark:text-white">
-                {meme.name}
-              </span>
+              <div className="flex flex-col">
+                <span className="font-semibold text-gray-800 dark:text-white">
+                  {meme.name}
+                </span>
+                {meme.description && (
+                  <span className="text-sm text-gray-600 dark:text-gray-400 truncate max-w-xs">
+                    {meme.description}
+                  </span>
+                )}
+              </div>
             </div>
             <div className="flex items-center gap-6 text-sm">
               <span className="font-bold text-gray-700 dark:text-gray-300">

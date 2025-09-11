@@ -11,11 +11,26 @@ export function ClientLeaderboard() {
   const loadLeaderboard = async () => {
     try {
       setLoading(true);
+      console.log('🔄 正在加载排行榜...');
       const response = await fetch('/api/leaderboard');
+      console.log('📡 排行榜 API 响应状态:', response.status);
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
       const data = await response.json();
+      console.log('📊 接收到的排行榜数据:', data);
+      console.log('🏆 排行榜记录数:', data.length);
+      if (data.length > 0) {
+        console.log('🖼️  第一条记录图片URL:', data[0].cover?.substring(0, 50));
+        console.log('📝 第一条记录标题:', data[0].name);
+        console.log('📝 第一条记录描述:', data[0].description);
+      }
+      
       setMemes(data);
     } catch (error) {
-      console.error('加载排行榜失败:', error);
+      console.error('❌ 加载排行榜失败:', error);
     } finally {
       setLoading(false);
     }

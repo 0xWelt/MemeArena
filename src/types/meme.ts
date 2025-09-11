@@ -12,8 +12,8 @@ export interface Meme {
 
 export interface ApiMeme {
   id: number;
-  title: string;
-  image_url: string;
+  name: string;
+  cover: string;
   description?: string;
   elo_score: number;
   wins: number;

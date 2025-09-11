@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import Link from 'next/link';
-import { ThemeSliderStable } from './theme-slider-stable';
+import { ThemeToggleImproved } from './theme-toggle-improved';
 
 export function Header() {
   return (
@@ -39,25 +39,31 @@ export function Header() {
         </div>
 
         {/* 右侧区域：导航链接 + 主题切换 + GitHub */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-4">
           {/* 导航链接 */}
           <nav className="hidden lg:flex items-center gap-6">
-            <Link href="/about" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+            <Link href="/about" className="text-sm text-muted-foreground hover:text-foreground transition-colors py-2">
               关于
             </Link>
-            <Link href="/leaderboard" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+            <Link href="/leaderboard" className="text-sm text-muted-foreground hover:text-foreground transition-colors py-2">
               排行榜
             </Link>
-            <Link href="/blog" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+            <Link href="/blog" className="text-sm text-muted-foreground hover:text-foreground transition-colors py-2">
               博客
             </Link>
-            <Link href="/help" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+            <Link href="/help" className="text-sm text-muted-foreground hover:text-foreground transition-colors py-2">
               帮助
             </Link>
           </nav>
 
-          {/* 主题切换滑块 - 稳定版本 */}
-          <ThemeSliderStable />
+          {/* 分隔竖线 */}
+          <div className="hidden lg:block w-px h-6 bg-border"></div>
+
+          {/* 主题切换滑块 - 改进版本 */}
+          <ThemeToggleImproved />
+
+          {/* 分隔竖线 */}
+          <div className="w-px h-6 bg-border"></div>
 
           {/* GitHub 链接 */}
           <a

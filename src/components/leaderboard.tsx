@@ -40,7 +40,7 @@ export function Leaderboard({ memes }: LeaderboardProps) {
                 alt={meme.name}
                 className="w-12 h-12 object-cover rounded-lg border border-border group-hover:scale-105 transition-transform"
                 onError={(e) => {
-                  console.error('排行榜图片加载失败:', meme.cover);
+                  // 静默处理图片加载失败，显示占位符
                   e.currentTarget.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDgiIGhlaWdodD0iNDgiIHZpZXdCb3g9IjAgMCA0OCA0OCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjQ4IiBoZWlnaHQ9IjQ4IiBmaWxsPSJoc2woMjE0LjMsMzEuOCUsOTEuNCUpIi8+CjxwYXRoIGQ9Ik0yNCAxMkMyOC40MTggMTIgMzIgMTUuNTgyIDMyIDIwQzMyIDI0LjQxOCAyOC40MTggMjggMjQgMjhDMTkuNTgyIDI4IDE2IDI0LjQxOCAxNiAyMEMxNiAxNS41ODIgMTkuNTgyIDEyIDI0IDEyWiIgZmlsbD0iaHNsKDIxNS40LDE2LjMlLDQ2LjklKSIvPgo8L3N2Zz4K';
                 }}
               />

@@ -27,7 +27,7 @@ export function MemeCard({ meme, onClick, disabled, showStats = false }: MemeCar
           alt={meme.name}
           className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-110"
           onError={(e) => {
-            console.error('图片加载失败:', meme.cover);
+            // 静默处理图片加载失败，显示占位符
             e.currentTarget.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiBmaWxsPSJoc2woMjE0LjMsMzEuOCUsOTEuNCUpIi8+CjxwYXRoIGQ9Ik0xMDAgNTBDMTE1LjQ3MyA1MCAxMjggNjIuNTI3MSAxMjggNzhDMTI4IDkzLjQ3MjkgMTE1LjQ3MyAxMDYgMTAwIDEwNkM4NC41MjcxIDEwNiA3MiA5My40NzI5IDcyIDc4QzcyIDYyLjUyNzEgODQuNTI3MSA1MCAxMDAgNTBaIiBmaWxsPSJoc2woMjE1LjQsMTYuMyUsNDYuOSUpIi8+CjxwYXRoIGQ9Ik0xMDAgMTI1VjE1MCIgZmlsbD0iaHNsKDIxNS40LDE2LjMlLDQ2LjklKSIvPgo8L3N2Zz4K';
           }}
         />

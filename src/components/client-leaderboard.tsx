@@ -30,7 +30,8 @@ export function ClientLeaderboard() {
       
       setMemes(data);
     } catch (error) {
-      console.error('❌ 加载排行榜失败:', error);
+      // 静默处理错误，用户界面已显示错误状态
+      // 可以在这里添加错误上报逻辑
     } finally {
       setLoading(false);
     }

@@ -101,36 +101,26 @@ export function BattleArena({ initialMemes = [] }: BattleArenaProps) {
         <p className="text-gray-600 dark:text-gray-300">
           点击卡片进行投票，帮助建立最权威的 meme 排行榜！
         </p>
-        <div className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 rounded-lg text-sm">
-          <span className="text-yellow-500">💡</span>
-          <span>为了公平投票，对战时隐藏评分数据</span>
-        </div>
       </div>
 
       <div className="flex flex-col lg:flex-row items-center justify-center gap-8">
-        <div className="flex flex-col items-center gap-4">
-          <span className="text-lg font-semibold text-gray-700 dark:text-gray-300">选项 A</span>
-          <MemeCard
-            meme={memes[0]}
-            onClick={() => submitBattle(memes[0].id)}
-            disabled={submitting}
-            showStats={false} // 对战页面隐藏统计信息，保持公平
-          />
-        </div>
+        <MemeCard
+          meme={memes[0]}
+          onClick={() => submitBattle(memes[0].id)}
+          disabled={submitting}
+          showStats={false} // 对战页面隐藏统计信息，保持公平
+        />
         
         <div className="text-4xl font-bold text-gray-400 dark:text-gray-500 px-4">
           VS
         </div>
         
-        <div className="flex flex-col items-center gap-4">
-          <span className="text-lg font-semibold text-gray-700 dark:text-gray-300">选项 B</span>
-          <MemeCard
-            meme={memes[1]}
-            onClick={() => submitBattle(memes[1].id)}
-            disabled={submitting}
-            showStats={false} // 对战页面隐藏统计信息，保持公平
-          />
-        </div>
+        <MemeCard
+          meme={memes[1]}
+          onClick={() => submitBattle(memes[1].id)}
+          disabled={submitting}
+          showStats={false} // 对战页面隐藏统计信息，保持公平
+        />
       </div>
 
       {submitting && (

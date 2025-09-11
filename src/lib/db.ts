@@ -88,6 +88,7 @@ export async function initDatabase() {
     await db.query(`
       CREATE TABLE IF NOT EXISTS memes (
         id SERIAL PRIMARY KEY,
+        uid VARCHAR(255) UNIQUE,
         name VARCHAR(255) NOT NULL,
         cover VARCHAR(500) NOT NULL,
         description TEXT,

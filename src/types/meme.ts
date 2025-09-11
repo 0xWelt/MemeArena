@@ -1,5 +1,6 @@
 export interface Meme {
   id: number;
+  uid: string;
   name: string;
   cover: string;
   description?: string;

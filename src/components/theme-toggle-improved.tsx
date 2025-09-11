@@ -22,16 +22,16 @@ export function ThemeToggleImproved() {
 
   // 获取滑块位置 - 视觉调试法，找到真正居中
   const getSliderPosition = () => {
-    // 新尺寸: 容器52px，滑块20px (w-5 h-5)
+    // 新尺寸: 容器52px，滑块24px (w-6 h-6)
     // light和dark模式左右各留4px边距
-    // 实际可用空间: 52px - 20px = 32px
+    // 实际可用空间: 52px - 24px = 28px
     switch (theme) {
       case 'system':
-        return 'translate-x-[16px]'; // 居中: 32px / 2 = 16px
+        return 'translate-x-[14px]'; // 居中: 28px / 2 = 14px
       case 'light':
         return 'translate-x-[4px]';  // 左侧，留4px边距
       case 'dark':
-        return 'translate-x-[28px]'; // 右侧，留4px边距 (32px-4px)
+        return 'translate-x-[24px]'; // 右侧，留4px边距 (28px-4px)
       default:
         return 'translate-x-[4px]';
     }
@@ -42,7 +42,7 @@ export function ThemeToggleImproved() {
     // 当主题是 system 时，显示显示器图标，否则根据实际主题显示对应图标
     if (theme === 'system') {
       return (
-        <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
           <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
           <line x1="8" y1="21" x2="16" y2="21" />
           <line x1="12" y1="17" x2="12" y2="21" />
@@ -52,7 +52,7 @@ export function ThemeToggleImproved() {
     
     if (actualTheme === 'dark') {
       return (
-        <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
           <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
         </svg>
       );
@@ -60,7 +60,7 @@ export function ThemeToggleImproved() {
     
     // light theme
     return (
-      <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
         <circle cx="12" cy="12" r="5" />
         <line x1="12" y1="1" x2="12" y2="3" />
         <line x1="12" y1="21" x2="12" y2="23" />
@@ -103,7 +103,7 @@ export function ThemeToggleImproved() {
       >
         {/* 滑块指示器 - 完美垂直居中 */}
         <div className={`
-          absolute top-1/2 -translate-y-1/2 ${getSliderPosition()} w-5 h-5 rounded-full transition-all duration-300 ease-in-out
+          absolute top-1/2 -translate-y-1/2 ${getSliderPosition()} w-6 h-6 rounded-full transition-all duration-300 ease-in-out
           ${actualTheme === 'dark' ? 'bg-gray-900 border border-gray-700' : 'bg-white border border-gray-100'}
           flex items-center justify-center pointer-events-none
         `}>

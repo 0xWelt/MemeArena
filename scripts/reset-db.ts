@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
-import { Pool } from 'pg';
+const { Pool } = require('pg');
 
 async function resetDatabase() {
-  const db = new Pool({
+  const db: any = new Pool({
     connectionString: process.env.DATABASE_URL || 'postgresql://localhost:5432/memearena',
     ssl: process.env.DATABASE_URL ? { rejectUnauthorized: false } : false
   });

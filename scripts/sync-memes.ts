@@ -1,13 +1,8 @@
 #!/usr/bin/env node
 
-import * as fs from 'fs';
-import * as path from 'path';
-import { Pool } from 'pg';
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+const fs = require('fs');
+const path = require('path');
+const { Pool } = require('pg');
 
 interface ParsedMeme {
   uid: string;
@@ -110,7 +105,7 @@ function getFilesToProcess(targetPath: string): string[] {
 /**
  * 同步meme到数据库
  */
-async function syncMemeToDatabase(meme: ParsedMeme, db: Pool): Promise<boolean> {
+async function syncMemeToDatabase(meme: ParsedMeme, db: any): Promise<boolean> {
   try {
     // 使用UPSERT - 如果存在则更新，不存在则插入
     const query = `
@@ -235,4 +230,4 @@ main().catch(error => {
   process.exit(1);
 });
 
-export { parseMemeFile };
+module.exports = { parseMemeFile };

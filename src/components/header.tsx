@@ -18,8 +18,11 @@ export function Header() {
             </h1>
           </Link>
 
+          {/* 分隔竖线 */}
+          <div className="hidden md:block w-px h-6 bg-border"></div>
+
           {/* 搜索栏 */}
-          <div className="hidden md:flex items-center relative max-w-[200px] flex-1">
+          <div className="hidden md:flex items-center relative max-w-[200px]">
             <div className="relative w-full">
               <input
                 type="text"

@@ -17,14 +17,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="zh-CN" suppressHydrationWarning>
-      <body className={inter.className}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
+    <html lang="zh-CN" suppressHydrationWarning className="scroll-smooth">
+      <body className={`${inter.className} bg-background text-foreground antialiased`}>
+        <ThemeProvider>
           <ThemeToggle />
           {children}
         </ThemeProvider>

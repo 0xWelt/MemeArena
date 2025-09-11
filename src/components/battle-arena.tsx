@@ -76,9 +76,14 @@ export function BattleArena({ initialMemes = [] }: BattleArenaProps) {
   if (loading) {
     return (
       <div className="flex justify-center items-center h-96">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 dark:border-blue-400 mx-auto mb-4"></div>
-          <p className="text-gray-600 dark:text-gray-300">加载中...</p>
+        <div className="text-center space-y-4">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+          <p className="text-muted-foreground text-lg">正在加载对战组合...</p>
+          <div className="flex justify-center space-x-1">
+            <div className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: '0s' }}></div>
+            <div className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+            <div className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+          </div>
         </div>
       </div>
     );
@@ -86,8 +91,10 @@ export function BattleArena({ initialMemes = [] }: BattleArenaProps) {
 
   if (memes.length !== 2) {
     return (
-      <div className="text-center text-red-600 dark:text-red-400 p-8">
-        无法加载对战组合
+      <div className="text-center text-destructive p-8 bg-destructive/10 rounded-xl border border-destructive/20">
+        <div className="text-6xl mb-4">😅</div>
+        <h3 className="text-xl font-semibold mb-2">加载失败</h3>
+        <p>无法加载对战组合，请刷新页面重试</p>
       </div>
     );
   }
@@ -102,7 +109,7 @@ export function BattleArena({ initialMemes = [] }: BattleArenaProps) {
           showStats={false} // 对战页面隐藏统计信息，保持公平
         />
         
-        <div className="text-4xl font-bold text-gray-400 dark:text-gray-500 px-4">
+        <div className="text-4xl font-bold text-muted-foreground px-4 animate-pulse">
           VS
         </div>
         
@@ -116,8 +123,8 @@ export function BattleArena({ initialMemes = [] }: BattleArenaProps) {
 
       {submitting && (
         <div className="text-center">
-          <div className="inline-flex items-center gap-2 text-gray-600 dark:text-gray-300">
-            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600 dark:border-blue-400"></div>
+          <div className="inline-flex items-center gap-2 text-muted-foreground">
+            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary"></div>
             提交中...
           </div>
         </div>

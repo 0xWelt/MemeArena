@@ -54,9 +54,14 @@ export function ClientLeaderboard() {
   if (loading) {
     return (
       <div className="flex justify-center items-center h-96">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 dark:border-blue-400 mx-auto mb-4"></div>
-          <p className="text-gray-600 dark:text-gray-300">加载排行榜...</p>
+        <div className="text-center space-y-4">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+          <p className="text-muted-foreground text-lg">加载排行榜中...</p>
+          <div className="flex justify-center space-x-1">
+            <div className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: '0s' }}></div>
+            <div className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+            <div className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+          </div>
         </div>
       </div>
     );
@@ -64,8 +69,10 @@ export function ClientLeaderboard() {
 
   if (memes.length === 0) {
     return (
-      <div className="text-center text-gray-600 dark:text-gray-300 p-8">
-        暂无数据
+      <div className="text-center text-muted-foreground p-8 bg-card rounded-xl border border-border">
+        <div className="text-6xl mb-4">📊</div>
+        <h3 className="text-xl font-semibold mb-2">暂无数据</h3>
+        <p>还没有表情包参与排名，快去投票吧！</p>
       </div>
     );
   }

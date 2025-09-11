@@ -94,12 +94,6 @@ export function BattleArena({ initialMemes = [] }: BattleArenaProps) {
 
   return (
     <div className="space-y-8">
-      <div className="text-center mb-8">
-        <h2 className="text-3xl font-bold text-gray-800 dark:text-white mb-4">
-          选择你更喜欢的表情包
-        </h2>
-      </div>
-
       <div className="flex flex-col lg:flex-row items-center justify-center gap-8">
         <MemeCard
           meme={memes[0]}

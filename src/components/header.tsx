@@ -19,7 +19,7 @@ export function Header() {
           </Link>
 
           {/* 搜索栏 */}
-          <div className="hidden md:flex items-center relative max-w-xs flex-1">
+          <div className="hidden md:flex items-center relative max-w-[200px] flex-1">
             <div className="relative w-full">
               <input
                 type="text"
@@ -33,7 +33,7 @@ export function Header() {
               </div>
               <div className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground">
                 <kbd className="px-1.5 py-0.5 text-xs font-mono bg-muted border border-border rounded">
-                  ⌘K
+                  ⌘ K
                 </kbd>
               </div>
             </div>

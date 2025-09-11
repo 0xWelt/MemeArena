@@ -7,34 +7,20 @@ if (fs.existsSync(envPath)) {
   require('dotenv').config();
 }
 
-const sqlite3 = require('sqlite3').verbose();
 const { Pool } = require('pg');
 
-// 检测环境，选择数据库
-const isRailway = process.env.RAILWAY_ENVIRONMENT === 'production' || process.env.DATABASE_URL;
-
-let db;
-
-if (isRailway && process.env.DATABASE_URL) {
-  // PostgreSQL for Railway
-  db = new Pool({
-    connectionString: process.env.DATABASE_URL,
-    ssl: {
-      rejectUnauthorized: false
-    }
-  });
-  
-  db.type = 'postgresql';
-} else {
-  // SQLite for local development
-  db = new sqlite3.Database('./memearena.db');
-  db.type = 'sqlite';
-}
+// 创建 PostgreSQL 连接池
+const db = new Pool({
+  connectionString: process.env.DATABASE_URL || 'postgresql://localhost:5432/memearena',
+  ssl: process.env.DATABASE_URL ? {
+    rejectUnauthorized: false
+  } : false
+});
 
 // 数据库初始化函数
 async function initDatabase() {
-  if (db.type === 'postgresql') {
-    // PostgreSQL 初始化
+  try {
+    // 创建 memes 表
     await db.query(`
       CREATE TABLE IF NOT EXISTS memes (
         id SERIAL PRIMARY KEY,
@@ -49,6 +35,7 @@ async function initDatabase() {
       )
     `);
 
+    // 创建 battles 表
     await db.query(`
       CREATE TABLE IF NOT EXISTS battles (
         id SERIAL PRIMARY KEY,
@@ -80,51 +67,11 @@ async function initDatabase() {
         );
       }
     }
-  } else {
-    // SQLite 初始化（原有代码）
-    return new Promise((resolve, reject) => {
-      db.serialize(() => {
-        db.run(`CREATE TABLE IF NOT EXISTS memes (
-          id INTEGER PRIMARY KEY AUTOINCREMENT,
-          title TEXT NOT NULL,
-          image_url TEXT NOT NULL,
-          elo_score INTEGER DEFAULT 1500,
-          wins INTEGER DEFAULT 0,
-          losses INTEGER DEFAULT 0,
-          created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-        )`);
 
-        db.run(`CREATE TABLE IF NOT EXISTS battles (
-          id INTEGER PRIMARY KEY AUTOINCREMENT,
-          meme1_id INTEGER NOT NULL,
-          meme2_id INTEGER NOT NULL,
-          winner_id INTEGER NOT NULL,
-          created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-          FOREIGN KEY (meme1_id) REFERENCES memes (id),
-          FOREIGN KEY (meme2_id) REFERENCES memes (id),
-          FOREIGN KEY (winner_id) REFERENCES memes (id)
-        )`);
-
-        db.get("SELECT COUNT(*) as count FROM memes", (err, row) => {
-          if (err) {
-            reject(err);
-            return;
-          }
-          
-          if (row.count === 0) {
-            const stmt = db.prepare("INSERT INTO memes (title, image_url) VALUES (?, ?)");
-            stmt.run("Distracted Boyfriend", "https://i.imgflip.com/1ur9b0.jpg");
-            stmt.run("Drake Hotline Bling", "https://i.imgflip.com/2wifvo.jpg");
-            stmt.run("Two Buttons", "https://i.imgflip.com/1otk96.jpg");
-            stmt.run("Change My Mind", "https://i.imgflip.com/24y43o.jpg");
-            stmt.run("Mocking Spongebob", "https://i.imgflip.com/1otpo4.jpg");
-            stmt.finalize(() => resolve());
-          } else {
-            resolve();
-          }
-        });
-      });
-    });
+    console.log('✅ PostgreSQL 数据库初始化完成');
+  } catch (error) {
+    console.error('❌ 数据库初始化失败:', error);
+    throw error;
   }
 }
 

@@ -1,11 +1,11 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Meme } from '@/types/meme';
+import { ApiMeme } from '@/types/meme';
 import { Leaderboard } from './leaderboard';
 
 export function ClientLeaderboard() {
-  const [memes, setMemes] = useState<Meme[]>([]);
+  const [memes, setMemes] = useState<ApiMeme[]>([]);
   const [loading, setLoading] = useState(true);
 
   const loadLeaderboard = async () => {

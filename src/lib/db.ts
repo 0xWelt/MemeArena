@@ -1,12 +1,52 @@
 import { Pool } from 'pg';
+import * as fs from 'fs';
+import * as path from 'path';
+
+// 加载环境变量
+const envPath = path.join(process.cwd(), '.env');
+if (fs.existsSync(envPath)) {
+  console.log('📋 检测到 .env 文件，加载环境变量');
+  require('dotenv').config({ path: envPath });
+} else {
+  console.log('⚠️  未检测到 .env 文件，使用默认配置');
+}
 
 // 创建 PostgreSQL 连接池
+const connectionString = process.env.DATABASE_URL || 'postgresql://localhost:5432/memearena';
+
+console.log('🔌 数据库连接配置:');
+console.log('   DATABASE_URL:', connectionString.replace(/:[^:@]+@/, ':****@'));
+console.log('   连接时间:', new Date().toLocaleString());
+
 const db = new Pool({
-  connectionString: process.env.DATABASE_URL || 'postgresql://localhost:5432/memearena',
+  connectionString,
   ssl: process.env.DATABASE_URL ? {
     rejectUnauthorized: false
-  } : false
+  } : false,
+  connectionTimeoutMillis: 10000, // 10秒连接超时
+  idleTimeoutMillis: 30000, // 30秒空闲超时
 });
+
+// 测试数据库连接并记录详细信息
+db.connect()
+  .then(client => {
+    console.log('✅ 数据库连接成功');
+    console.log('   连接池状态: 活跃连接数 =', db.totalCount, ', 空闲连接数 =', db.idleCount);
+    
+    // 获取数据库版本信息
+    client.query('SELECT version()').then(result => {
+      console.log('   PostgreSQL版本:', result.rows[0].version.split(' ')[0]);
+    }).catch(err => {
+      console.log('   无法获取版本信息:', err.message);
+    });
+    
+    client.release();
+  })
+  .catch(err => {
+    console.error('❌ 数据库连接失败:', err.message);
+    console.error('   错误代码:', err.code);
+    console.error('   错误详情:', err.detail);
+  });
 
 // 数据库初始化函数
 export async function initDatabase() {

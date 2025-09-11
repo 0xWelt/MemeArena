@@ -1,26 +1,36 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Meme } from '@/types/meme';
+import { ApiMeme } from '@/types/meme';
 import { MemeCard } from './meme-card';
 
 interface BattleArenaProps {
-  initialMemes?: Meme[];
+  initialMemes?: ApiMeme[];
 }
 
 export function BattleArena({ initialMemes = [] }: BattleArenaProps) {
-  const [memes, setMemes] = useState<Meme[]>(initialMemes);
+  const [memes, setMemes] = useState<ApiMeme[]>(initialMemes);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
 
   const loadBattlePair = async () => {
     try {
       setLoading(true);
+      console.log('🔄 正在加载对战组合...');
       const response = await fetch('/api/battle-pair');
+      console.log('📡 API 响应状态:', response.status);
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
       const data = await response.json();
+      console.log('📊 接收到的数据:', data);
+      console.log('🖼️  图片URL检查:', data.map((meme: Meme) => meme.cover?.substring(0, 50)));
+      
       setMemes(data);
     } catch (error) {
-      console.error('加载对战组合失败:', error);
+      console.error('❌ 加载对战组合失败:', error);
     } finally {
       setLoading(false);
     }

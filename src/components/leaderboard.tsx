@@ -1,9 +1,9 @@
 'use client';
 
-import { Meme } from '@/types/meme';
+import { ApiMeme } from '@/types/meme';
 
 interface LeaderboardProps {
-  memes: Meme[];
+  memes: ApiMeme[];
 }
 
 export function Leaderboard({ memes }: LeaderboardProps) {

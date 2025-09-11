@@ -10,6 +10,16 @@ export interface Meme {
   updated_at: string;
 }
 
+export interface ApiMeme {
+  id: number;
+  title: string;
+  image_url: string;
+  description?: string;
+  elo_score: number;
+  wins: number;
+  losses: number;
+}
+
 export interface Battle {
   id: number;
   meme1_id: number;

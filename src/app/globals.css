@@ -2,53 +2,96 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ===== 现代配色系统 ===== */
+
+/* 浅色模式 - 温暖现代风格 */
 :root {
-  /* 浅色模式颜色 */
-  --background: 0 0% 100%;
-  --foreground: 222.2 84% 4.9%;
-  --card: 0 0% 100%;
-  --card-foreground: 222.2 84% 4.9%;
+  /* 主背景 - 温暖的米白色 */
+  --background: 45 20% 97%;  /* #FDF8F0 */
+  
+  /* 前景文字 - 深炭色 */
+  --foreground: 220 15% 15%;  /* #1A1D23 */
+  
+  /* 卡片背景 - 纯白色 */
+  --card: 0 0% 100%;  /* #FFFFFF */
+  --card-foreground: 220 15% 15%;
+  
+  /* 弹窗背景 */
   --popover: 0 0% 100%;
-  --popover-foreground: 222.2 84% 4.9%;
-  --primary: 221.2 83.2% 53.3%;
-  --primary-foreground: 210 40% 98%;
-  --secondary: 210 40% 96%;
-  --secondary-foreground: 222.2 84% 4.9%;
-  --muted: 210 40% 96%;
-  --muted-foreground: 215.4 16.3% 46.9%;
-  --accent: 210 40% 96%;
-  --accent-foreground: 222.2 84% 4.9%;
-  --destructive: 0 84.2% 60.2%;
-  --destructive-foreground: 210 40% 98%;
-  --border: 214.3 31.8% 91.4%;
-  --input: 214.3 31.8% 91.4%;
-  --ring: 221.2 83.2% 53.3%;
-  --radius: 0.5rem;
+  --popover-foreground: 220 15% 15%;
+  
+  /* 主色调 - 温暖的珊瑚色 */
+  --primary: 15 80% 60%;  /* #FF6B47 */
+  --primary-foreground: 0 0% 100%;
+  
+  /* 次要色 - 温暖的金色 */
+  --secondary: 35 70% 70%;  /* #F4A460 */
+  --secondary-foreground: 220 15% 15%;
+  
+  /* 静音色 - 温暖的灰色 */
+  --muted: 30 10% 90%;  /* #E8E2D8 */
+  --muted-foreground: 220 10% 45%;  /* #6B7280 */
+  
+  /* 强调色 - 温暖的橙色 */
+  --accent: 25 75% 65%;  /* #FFA552 */
+  --accent-foreground: 220 15% 15%;
+  
+  /* 破坏色 - 红色 */
+  --destructive: 0 70% 50%;  /* #DC2626 */
+  --destructive-foreground: 0 0% 100%;
+  
+  /* 边框色 */
+  --border: 30 15% 85%;  /* #D6CFC7 */
+  --input: 30 15% 85%;
+  --ring: 15 80% 60%;
+  
+  /* 圆角 */
+  --radius: 0.75rem;  /* 12px - 更现代的圆角 */
 }
 
+/* 深色模式 - 深邃优雅风格 */
 .dark {
-  /* 深色模式颜色 */
-  --background: 222.2 84% 4.9%;
-  --foreground: 210 40% 98%;
-  --card: 222.2 84% 4.9%;
-  --card-foreground: 210 40% 98%;
-  --popover: 222.2 84% 4.9%;
-  --popover-foreground: 210 40% 98%;
-  --primary: 217.2 91.2% 59.8%;
-  --primary-foreground: 222.2 84% 4.9%;
-  --secondary: 217.2 32.6% 17.5%;
-  --secondary-foreground: 210 40% 98%;
-  --muted: 217.2 32.6% 17.5%;
-  --muted-foreground: 215 20.2% 65.1%;
-  --accent: 217.2 32.6% 17.5%;
-  --accent-foreground: 210 40% 98%;
-  --destructive: 0 62.8% 30.6%;
-  --destructive-foreground: 210 40% 98%;
-  --border: 217.2 32.6% 17.5%;
-  --input: 217.2 32.6% 17.5%;
-  --ring: 224.3 76.3% 94.1%;
+  /* 主背景 - 深邃的蓝黑色 */
+  --background: 220 25% 8%;  /* #0F1117 */
+  
+  /* 前景文字 - 柔和的白色 */
+  --foreground: 210 20% 92%;  /* #F0F4F8 */
+  
+  /* 卡片背景 - 深灰色 */
+  --card: 220 20% 12%;  /* #1A1D29 */
+  --card-foreground: 210 20% 92%;
+  
+  /* 弹窗背景 */
+  --popover: 220 20% 12%;
+  --popover-foreground: 210 20% 92%;
+  
+  /* 主色调 - 明亮的青色 */
+  --primary: 195 80% 50%;  /* #00C8F4 */
+  --primary-foreground: 220 25% 8%;
+  
+  /* 次要色 - 深邃的紫色 */
+  --secondary: 260 50% 45%;  /* #6B46C1 */
+  --secondary-foreground: 210 20% 92%;
+  
+  /* 静音色 - 深灰色 */
+  --muted: 220 15% 18%;  /* #2A2D3A */
+  --muted-foreground: 210 15% 65%;  /* #A0AEC0 */
+  
+  /* 强调色 - 明亮的绿色 */
+  --accent: 160 70% 45%;  /* #2DD4BF */
+  --accent-foreground: 210 20% 92%;
+  
+  /* 破坏色 - 亮红色 */
+  --destructive: 0 80% 60%;  /* #EF4444 */
+  --destructive-foreground: 210 20% 92%;
+  
+  /* 边框色 */
+  --border: 220 15% 25%;  /* #2A2D3A */
+  --input: 220 15% 25%;
+  --ring: 195 80% 50%;
 }
 
+/* ===== 基础样式 ===== */
 * {
   border-color: hsl(var(--border));
 }
@@ -56,25 +99,86 @@
 body {
   color: hsl(var(--foreground));
   background: hsl(var(--background));
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   transition: background-color 0.3s ease, color 0.3s ease;
+  font-feature-settings: 'rlig' 1, 'calt' 1;
 }
 
-/* 渐变背景 */
-.gradient-bg {
-  background: linear-gradient(135deg, hsl(var(--primary)) 0%, #8b5cf6 100%);
+/* ===== 渐变背景 ===== */
+.main-gradient {
+  background: linear-gradient(135deg, 
+    hsl(var(--primary)) 0%, 
+    hsl(var(--secondary)) 50%, 
+    hsl(var(--accent)) 100%
+  );
 }
 
-.dark .gradient-bg {
-  background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+.dark .main-gradient {
+  background: linear-gradient(135deg, 
+    hsl(var(--primary)) 0%, 
+    hsl(220, 30%, 15%) 50%, 
+    hsl(var(--accent)) 100%
+  );
 }
 
-/* 主题切换动画 */
-* {
-  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+/* ===== 玻璃拟态效果 ===== */
+.glass {
+  background: hsl(var(--card) / 0.8);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid hsl(var(--border) / 0.3);
 }
 
-/* 自定义滚动条 */
+.dark .glass {
+  background: hsl(var(--card) / 0.6);
+  border: 1px solid hsl(var(--border) / 0.2);
+}
+
+/* ===== 动画效果 ===== */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes glow {
+  0%, 100% {
+    box-shadow: 0 0 20px hsl(var(--primary) / 0.3);
+  }
+  50% {
+    box-shadow: 0 0 30px hsl(var(--primary) / 0.5);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.animate-slide-in {
+  animation: slideIn 0.4s ease-out;
+}
+
+.animate-glow {
+  animation: glow 2s ease-in-out infinite;
+}
+
+/* ===== 自定义滚动条 ===== */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
@@ -85,18 +189,35 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: hsl(var(--muted-foreground));
+  background: hsl(var(--muted-foreground) / 0.5);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: hsl(var(--foreground));
-}
-
-.dark ::-webkit-scrollbar-track {
-  background: hsl(var(--muted));
-}
-
-.dark ::-webkit-scrollbar-thumb {
   background: hsl(var(--muted-foreground));
+}
+
+/* ===== 主题切换动画 ===== */
+* {
+  transition: background-color 0.2s ease, 
+              border-color 0.2s ease, 
+              color 0.2s ease,
+              box-shadow 0.2s ease;
+}
+
+/* ===== 特殊效果 ===== */
+.text-glow {
+  text-shadow: 0 0 20px hsl(var(--primary) / 0.5);
+}
+
+.border-glow {
+  border-color: hsl(var(--primary) / 0.3);
+  box-shadow: 0 0 20px hsl(var(--primary) / 0.2);
+}
+
+/* ===== 响应式断点 ===== */
+@media (max-width: 768px) {
+  :root {
+    --radius: 0.5rem;
+  }
 }

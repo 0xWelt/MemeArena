@@ -49,19 +49,36 @@ module.exports = {
         sm: "calc(var(--radius) - 4px)",
       },
       animation: {
-        'fade-in': 'fadeIn 0.5s ease-in-out',
-        'slide-up': 'slideUp 0.3s ease-out',
+        'fade-in-up': 'fadeInUp 0.6s ease-out',
+        'slide-in': 'slideIn 0.4s ease-out',
+        'glow': 'glow 2s ease-in-out infinite',
+        'pulse-slow': 'pulse 3s ease-in-out infinite',
       },
       keyframes: {
-        fadeIn: {
-          '0%': { opacity: '0' },
-          '100%': { opacity: '1' },
+        fadeInUp: {
+          '0%': { opacity: '0', transform: 'translateY(20px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
         },
-        slideUp: {
-          '0%': { transform: 'translateY(10px)', opacity: '0' },
-          '100%': { transform: 'translateY(0)', opacity: '1' },
+        slideIn: {
+          '0%': { opacity: '0', transform: 'scale(0.95)' },
+          '100%': { opacity: '1', transform: 'scale(1)' },
+        },
+        glow: {
+          '0%, 100%': { boxShadow: '0 0 20px hsl(var(--primary) / 0.3)' },
+          '50%': { boxShadow: '0 0 30px hsl(var(--primary) / 0.5)' },
         },
       },
+      backgroundImage: {
+        'gradient-primary': 'linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--secondary)) 50%, hsl(var(--accent)) 100%)',
+        'gradient-dark': 'linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(220, 30%, 15%) 50%, hsl(var(--accent)) 100%)',
+      },
+      typography: {
+        'primary': {
+          css: {
+            color: 'hsl(var(--foreground))',
+          }
+        }
+      }
     },
   },
   plugins: [],

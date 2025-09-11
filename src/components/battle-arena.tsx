@@ -16,22 +16,16 @@ export function BattleArena({ initialMemes = [] }: BattleArenaProps) {
   const loadBattlePair = async () => {
     try {
       setLoading(true);
-      console.log('🔄 正在加载对战组合...');
       const response = await fetch('/api/battle-pair');
-      console.log('📡 API 响应状态:', response.status);
       
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       
       const data = await response.json();
-      console.log('📊 接收到的数据:', data);
-      console.log('🖼️  图片URL检查:', data.map((meme: ApiMeme) => meme.cover?.substring(0, 50)));
-      
       setMemes(data);
     } catch (error) {
       // 静默处理错误，用户界面已显示错误状态
-      // 可以在这里添加错误上报逻辑
     } finally {
       setLoading(false);
     }
@@ -77,13 +71,20 @@ export function BattleArena({ initialMemes = [] }: BattleArenaProps) {
   if (loading) {
     return (
       <div className="flex justify-center items-center h-96">
-        <div className="text-center space-y-4">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
-          <p className="text-muted-foreground text-lg">正在加载对战组合...</p>
-          <div className="flex justify-center space-x-1">
-            <div className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: '0s' }}></div>
-            <div className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-            <div className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+        <div className="text-center space-y-6">
+          <div className="relative">
+            <div className="animate-spin rounded-full h-16 w-16 border-4 border-primary/20 border-t-primary mx-auto"></div>
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="text-2xl">🎭</div>
+            </div>
+          </div>
+          <div className="space-y-2">
+            <p className="text-muted-foreground text-lg font-medium">正在准备对战...</p>
+            <div className="flex justify-center space-x-2">
+              <div className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: '0s' }}></div>
+              <div className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+              <div className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+            </div>
           </div>
         </div>
       </div>
@@ -101,32 +102,51 @@ export function BattleArena({ initialMemes = [] }: BattleArenaProps) {
   }
 
   return (
-    <div className="space-y-8">
-      <div className="flex flex-col lg:flex-row items-center justify-center gap-8">
-        <MemeCard
-          meme={memes[0]}
-          onClick={() => submitBattle(memes[0].id)}
-          disabled={submitting}
-          showStats={false} // 对战页面隐藏统计信息，保持公平
-        />
-        
-        <div className="text-4xl font-bold text-muted-foreground px-4 animate-pulse">
-          VS
+    <div className="space-y-12">
+      {/* VS 标题 */}
+      <div className="text-center">
+        <div className="inline-flex items-center justify-center space-x-8">
+          <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent w-24"></div>
+          <div className="text-6xl font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent animate-pulse">
+            VS
+          </div>
+          <div className="h-px bg-gradient-to-l from-transparent via-border to-transparent w-24"></div>
         </div>
-        
-        <MemeCard
-          meme={memes[1]}
-          onClick={() => submitBattle(memes[1].id)}
-          disabled={submitting}
-          showStats={false} // 对战页面隐藏统计信息，保持公平
-        />
       </div>
 
+      {/* 对战卡片 */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+        <div className="order-2 lg:order-1">
+          <MemeCard
+            meme={memes[0]}
+            onClick={() => submitBattle(memes[0].id)}
+            disabled={submitting}
+            showStats={false}
+          />
+        </div>
+        
+        <div className="order-1 lg:order-2 flex items-center justify-center">
+          <div className="text-8xl font-bold bg-gradient-to-br from-primary to-secondary bg-clip-text text-transparent opacity-80">
+            ⚔️
+          </div>
+        </div>
+        
+        <div className="order-3">
+          <MemeCard
+            meme={memes[1]}
+            onClick={() => submitBattle(memes[1].id)}
+            disabled={submitting}
+            showStats={false}
+          />
+        </div>
+      </div>
+
+      {/* 提交状态 */}
       {submitting && (
         <div className="text-center">
-          <div className="inline-flex items-center gap-2 text-muted-foreground">
-            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary"></div>
-            提交中...
+          <div className="inline-flex items-center gap-3 text-muted-foreground bg-muted/50 px-6 py-3 rounded-full">
+            <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-primary"></div>
+            <span className="font-medium">正在记录您的选择...</span>
           </div>
         </div>
       )}

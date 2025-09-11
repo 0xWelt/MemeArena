@@ -70,10 +70,16 @@ export function ClientLeaderboard() {
 
   if (memes.length === 0) {
     return (
-      <div className="text-center text-muted-foreground p-8 bg-card rounded-xl border border-border">
-        <div className="text-6xl mb-4">📊</div>
-        <h3 className="text-xl font-semibold mb-2">暂无数据</h3>
-        <p>还没有表情包参与排名，快去投票吧！</p>
+      <div className="text-center text-muted-foreground p-12 bg-card/50 rounded-2xl border border-border/50 backdrop-blur-sm">
+        <div className="text-8xl mb-6 animate-bounce">🏆</div>
+        <h3 className="text-2xl font-bold mb-4">排行榜虚位以待</h3>
+        <p className="text-lg mb-6">还没有表情包参与排名</p>
+        <div className="inline-flex items-center gap-2 text-primary font-medium">
+          <span>快去参与对战，为喜欢的表情包投票吧！</span>
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+          </svg>
+        </div>
       </div>
     );
   }

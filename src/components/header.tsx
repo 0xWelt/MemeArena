@@ -13,12 +13,9 @@ export function Header() {
           {/* Logo 和标题 */}
           <Link href="/" className="flex items-center gap-3 group">
             <div className="text-2xl group-hover:scale-110 transition-transform">🎭</div>
-            <div className="space-y-0.5">
-              <h1 className="text-lg font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                Meme Arena
-              </h1>
-              <p className="text-xs text-muted-foreground">表情包竞技场</p>
-            </div>
+            <h1 className="text-lg font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+              Meme Arena
+            </h1>
           </Link>
 
           {/* 搜索栏 */}

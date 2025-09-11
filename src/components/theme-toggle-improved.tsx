@@ -6,13 +6,6 @@ import { useTheme } from 'next-themes';
 export function ThemeToggleImproved() {
   const { theme, setTheme, systemTheme, resolvedTheme } = useTheme();
   
-  // 立即初始化主题状态，避免等待数据库加载
-  const [mounted, setMounted] = React.useState(false);
-  
-  React.useEffect(() => {
-    setMounted(true);
-  }, []);
-  
   // 获取当前实际主题（处理 SSR 和水合）
   const currentTheme = theme === 'system' ? systemTheme : theme;
   const actualTheme = resolvedTheme || currentTheme || 'system';
@@ -103,22 +96,15 @@ export function ThemeToggleImproved() {
         className={`
           relative w-[52px] h-7 rounded-full p-0 shadow-inner transition-all duration-300 hover:border-primary/60 group
           focus:outline-none border border-border/30
-          ${mounted 
-            ? 'bg-gray-200 dark:bg-gray-700' 
-            : 'bg-gray-100'
-          }
+          bg-gray-200 dark:bg-gray-700
         `}
         aria-label={`当前主题: ${getThemeName()}，点击切换`}
         title={getThemeName()}
-        disabled={!mounted}
       >
         {/* 滑块指示器 - 完美垂直居中 */}
         <div className={`
           absolute top-1/2 -translate-y-1/2 ${getSliderPosition()} w-5 h-5 rounded-full transition-all duration-300 ease-in-out
-          ${mounted 
-            ? (actualTheme === 'dark' ? 'bg-gray-900 border border-gray-700' : 'bg-white border border-gray-100')
-            : 'bg-gray-200 border border-gray-300'
-          }
+          ${actualTheme === 'dark' ? 'bg-gray-900 border border-gray-700' : 'bg-white border border-gray-100'}
           flex items-center justify-center pointer-events-none
         `}>
           {/* 滑块内图标 - 保留滑动效果，移除颜色闪烁 */}

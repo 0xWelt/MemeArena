@@ -24,6 +24,7 @@ export function MemeCard({ meme, onClick, disabled, showStats = false }: MemeCar
     >
       {/* 图片容器 */}
       <div className="relative overflow-hidden rounded-xl mb-6">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={meme.cover}
           alt={meme.name}

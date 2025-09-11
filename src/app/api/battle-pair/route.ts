@@ -9,7 +9,7 @@ export async function GET() {
     );
     
     console.log('📊 查询结果:', result.rows.length, '条记录');
-    result.rows.forEach((row, index) => {
+    result.rows.forEach((row: any, index: number) => {
       console.log(`   ${index + 1}.`, row.name, '- 图片URL:', row.cover?.substring(0, 50) + '...');
     });
     

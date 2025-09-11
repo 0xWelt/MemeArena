@@ -9,7 +9,7 @@ const PORT = process.env.PORT || 3000;
 // 中间件
 app.use(cors());
 app.use(express.json());
-app.use(express.static('public'));
+app.use(express.static('src'));
 
 // 数据库初始化
 initDatabase().then(() => {
@@ -86,7 +86,7 @@ app.get('/api/leaderboard', async (req, res) => {
 
 // 主页
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  res.sendFile(path.join(__dirname, 'src', 'index.html'));
 });
 
 app.listen(PORT, () => {

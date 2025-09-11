@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import Link from 'next/link';
-import { ThemeToggleProfessional } from './theme-toggle-professional';
+import { ThemeSliderStable } from './theme-slider-stable';
 
 export function Header() {
   return (
@@ -56,12 +56,12 @@ export function Header() {
             </Link>
           </nav>
 
-          {/* 主题切换 */}
-          <ThemeToggleProfessional />
+          {/* 主题切换滑块 - 稳定版本 */}
+          <ThemeSliderStable />
 
           {/* GitHub 链接 */}
           <a
-            href="https://github.com/your-username/meme-arena"
+            href="https://github.com/0xWelt/MemeArena"
             target="_blank"
             rel="noopener noreferrer"
             className="p-2 rounded-lg bg-card/50 hover:bg-card/60 border border-border/50 transition-all duration-200 group"

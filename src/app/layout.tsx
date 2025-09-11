@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import { ThemeProvider } from '@/components/theme-provider';
-import { ThemeToggleModern } from '@/components/theme-toggle-modern';
+import { ThemeToggleProfessional } from '@/components/theme-toggle-professional';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -20,7 +20,7 @@ export default function RootLayout({
     <html lang="zh-CN" suppressHydrationWarning className="scroll-smooth">
       <body className={`${inter.className} bg-background text-foreground antialiased selection:bg-primary selection:text-primary-foreground`}>
         <ThemeProvider>
-          <ThemeToggleModern />
+          <ThemeToggleProfessional />
           {children}
         </ThemeProvider>
       </body>

@@ -103,20 +103,10 @@ export function BattleArena({ initialMemes = [] }: BattleArenaProps) {
 
   return (
     <div className="space-y-12">
-      {/* VS 标题 */}
-      <div className="text-center">
-        <div className="inline-flex items-center justify-center space-x-8">
-          <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent w-24"></div>
-          <div className="text-6xl font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent animate-pulse">
-            VS
-          </div>
-          <div className="h-px bg-gradient-to-l from-transparent via-border to-transparent w-24"></div>
-        </div>
-      </div>
-
-      {/* 对战卡片 */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-        <div className="order-2 lg:order-1">
+      {/* 对战卡片 - 一左一右经典布局 */}
+      <div className="flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-16">
+        {/* 左侧卡片 */}
+        <div className="flex-1 max-w-md">
           <MemeCard
             meme={memes[0]}
             onClick={() => submitBattle(memes[0].id)}
@@ -125,13 +115,15 @@ export function BattleArena({ initialMemes = [] }: BattleArenaProps) {
           />
         </div>
         
-        <div className="order-1 lg:order-2 flex items-center justify-center">
-          <div className="text-8xl font-bold bg-gradient-to-br from-primary to-secondary bg-clip-text text-transparent opacity-80">
+        {/* 中央对战图标 */}
+        <div className="flex-shrink-0 flex items-center justify-center my-8 lg:my-0">
+          <div className="text-8xl lg:text-9xl font-bold bg-gradient-to-br from-primary to-secondary bg-clip-text text-transparent opacity-90 animate-pulse">
             ⚔️
           </div>
         </div>
         
-        <div className="order-3">
+        {/* 右侧卡片 */}
+        <div className="flex-1 max-w-md">
           <MemeCard
             meme={memes[1]}
             onClick={() => submitBattle(memes[1].id)}
@@ -143,8 +135,8 @@ export function BattleArena({ initialMemes = [] }: BattleArenaProps) {
 
       {/* 提交状态 */}
       {submitting && (
-        <div className="text-center">
-          <div className="inline-flex items-center gap-3 text-muted-foreground bg-muted/50 px-6 py-3 rounded-full">
+        <div className="text-center mt-12">
+          <div className="inline-flex items-center gap-3 text-muted-foreground">
             <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-primary"></div>
             <span className="font-medium">正在记录您的选择...</span>
           </div>

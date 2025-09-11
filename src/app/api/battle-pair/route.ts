@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
-import db from '@/lib/db';
+import { getDb } from '@/lib/db';
 
 export async function GET() {
   try {
     console.log('🎯 获取对战组合...');
+    const db = await getDb();
     const result = await db.query(
       'SELECT id, name, cover, description, elo_score, wins, losses FROM memes ORDER BY RANDOM() LIMIT 2'
     );

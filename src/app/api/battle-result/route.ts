@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import db from '@/lib/db';
+import { getDb } from '@/lib/db';
 import { BattleResult } from '@/types/meme';
 
 export async function POST(request: NextRequest) {
@@ -13,6 +13,8 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       );
     }
+
+    const db = await getDb();
 
     // 插入对战记录
     await db.query(

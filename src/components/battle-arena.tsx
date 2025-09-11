@@ -94,13 +94,10 @@ export function BattleArena({ initialMemes = [] }: BattleArenaProps) {
 
   return (
     <div className="space-y-8">
-      <div className="text-center">
-        <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-2">
+      <div className="text-center mb-8">
+        <h2 className="text-3xl font-bold text-gray-800 dark:text-white mb-4">
           选择你更喜欢的表情包
         </h2>
-        <p className="text-gray-600 dark:text-gray-300">
-          点击卡片进行投票，帮助建立最权威的 meme 排行榜！
-        </p>
       </div>
 
       <div className="flex flex-col lg:flex-row items-center justify-center gap-8">

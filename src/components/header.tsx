@@ -23,7 +23,7 @@ export function Header() {
             <div className="relative w-full">
               <input
                 type="text"
-                placeholder="搜索表情包..."
+                placeholder="Search command+k"
                 className="w-full pl-9 pr-3 py-1.5 text-sm bg-card/50 border border-border/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary/50 transition-all"
               />
               <div className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">

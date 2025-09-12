@@ -4,7 +4,6 @@ module.exports = {
     'plugin:@typescript-eslint/recommended',
     'plugin:react/recommended',
     'plugin:react-hooks/recommended',
-    'prettier',
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -14,11 +13,7 @@ module.exports = {
     ecmaVersion: 2020,
     sourceType: 'module',
   },
-  plugins: [
-    '@typescript-eslint',
-    'react',
-    'react-hooks',
-  ],
+  plugins: ['@typescript-eslint', 'react', 'react-hooks'],
   rules: {
     // TypeScript
     '@typescript-eslint/no-unused-vars': 'error',
@@ -31,6 +26,9 @@ module.exports = {
     'react/prop-types': 'off',
     'react/display-name': 'off',
 
+    // Next.js specific - from original .eslintrc.json
+    '@next/next/no-img-element': 'off',
+
     // General
     'no-console': 'warn',
     'no-debugger': 'error',
@@ -40,8 +38,8 @@ module.exports = {
     'prefer-template': 'error',
     'no-unused-expressions': 'error',
     'object-curly-spacing': ['error', 'always'],
-    'quotes': ['error', 'single', { avoidEscape: true }],
-    'semi': ['error', 'always'],
+    quotes: ['error', 'single', { avoidEscape: true }],
+    semi: ['error', 'always'],
     'comma-dangle': ['error', 'always-multiline'],
   },
   settings: {
@@ -54,4 +52,12 @@ module.exports = {
     node: true,
     es2020: true,
   },
+  overrides: [
+    {
+      files: ['src/components/*.tsx', 'src/app/api/*.ts'],
+      rules: {
+        '@next/next/no-img-element': 'off',
+      },
+    },
+  ],
 };

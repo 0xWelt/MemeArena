@@ -5,14 +5,14 @@ import { useTheme } from 'next-themes';
 
 export function ThemeToggleImproved() {
   const { theme, setTheme, systemTheme, resolvedTheme } = useTheme();
-  
+
   // 获取当前实际主题（处理 SSR 和水合）
   const currentTheme = theme === 'system' ? systemTheme : theme;
   const actualTheme = resolvedTheme || currentTheme || 'system';
 
   // 主题顺序: 系统 -> 浅色 -> 深色
   const themes = ['system', 'light', 'dark'] as const;
-  const currentIndex = themes.indexOf(theme as typeof themes[number]);
+  const currentIndex = themes.indexOf(theme as (typeof themes)[number]);
   const nextIndex = (currentIndex + 1) % themes.length;
 
   // 切换主题
@@ -29,7 +29,7 @@ export function ThemeToggleImproved() {
       case 'system':
         return 'translate-x-[14px]'; // 居中: 28px / 2 = 14px
       case 'light':
-        return 'translate-x-[4px]';  // 左侧，留4px边距
+        return 'translate-x-[4px]'; // 左侧，留4px边距
       case 'dark':
         return 'translate-x-[24px]'; // 右侧，留4px边距 (28px-4px)
       default:
@@ -42,25 +42,43 @@ export function ThemeToggleImproved() {
     // 当主题是 system 时，显示显示器图标，否则根据实际主题显示对应图标
     if (theme === 'system') {
       return (
-        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <svg
+          className="w-4 h-4"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+        >
           <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
           <line x1="8" y1="21" x2="16" y2="21" />
           <line x1="12" y1="17" x2="12" y2="21" />
         </svg>
       );
     }
-    
+
     if (actualTheme === 'dark') {
       return (
-        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <svg
+          className="w-4 h-4"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+        >
           <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
         </svg>
       );
     }
-    
+
     // light theme
     return (
-      <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <svg
+        className="w-4 h-4"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+      >
         <circle cx="12" cy="12" r="5" />
         <line x1="12" y1="1" x2="12" y2="3" />
         <line x1="12" y1="21" x2="12" y2="23" />
@@ -102,16 +120,20 @@ export function ThemeToggleImproved() {
         title={getThemeName()}
       >
         {/* 滑块指示器 - 完美垂直居中 */}
-        <div className={`
+        <div
+          className={`
           absolute top-1/2 -translate-y-1/2 ${getSliderPosition()} w-6 h-6 rounded-full transition-all duration-300 ease-in-out
           ${actualTheme === 'dark' ? 'bg-gray-900 border border-gray-700' : 'bg-white border border-gray-100'}
           flex items-center justify-center pointer-events-none
-        `}>
+        `}
+        >
           {/* 滑块内图标 - 保留滑动效果，移除颜色闪烁 */}
-          <div className={`
+          <div
+            className={`
             ${actualTheme === 'dark' ? 'text-blue-400' : actualTheme === 'light' ? 'text-yellow-500' : 'text-gray-600'}
             transition-transform duration-300
-          `}>
+          `}
+          >
             {getCurrentIcon()}
           </div>
         </div>

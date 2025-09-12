@@ -7,8 +7,14 @@ export default function Home() {
       {/* 背景装饰 */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-primary/20 rounded-full blur-3xl animate-pulse-slow"></div>
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-secondary/20 rounded-full blur-3xl animate-pulse-slow" style={{ animationDelay: '1s' }}></div>
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-60 h-60 bg-accent/20 rounded-full blur-3xl animate-pulse-slow" style={{ animationDelay: '2s' }}></div>
+        <div
+          className="absolute -bottom-40 -left-40 w-80 h-80 bg-secondary/20 rounded-full blur-3xl animate-pulse-slow"
+          style={{ animationDelay: '1s' }}
+        ></div>
+        <div
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-60 h-60 bg-accent/20 rounded-full blur-3xl animate-pulse-slow"
+          style={{ animationDelay: '2s' }}
+        ></div>
       </div>
 
       <div className="relative container mx-auto px-4 py-8">
@@ -37,7 +43,10 @@ export default function Home() {
         </section>
 
         {/* Footer */}
-        <footer className="text-center mt-16 text-muted-foreground animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
+        <footer
+          className="text-center mt-16 text-muted-foreground animate-fade-in-up"
+          style={{ animationDelay: '0.4s' }}
+        >
           <p className="text-sm">© 2024 Meme Arena - 让表情包找到它们应有的排名</p>
         </footer>
       </div>

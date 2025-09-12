@@ -2,10 +2,9 @@
 
 A Meme Ranking System Based on Group Preferences
 
-
 ## Repo Status
 
-![Alt](https://repobeats.axiom.co/api/embed/4ddc9df37478bbf5d3bb1d7553a16e402f6759ee.svg "Repobeats analytics image")
+![Alt](https://repobeats.axiom.co/api/embed/4ddc9df37478bbf5d3bb1d7553a16e402f6759ee.svg 'Repobeats analytics image')
 
 ## Contributors
 

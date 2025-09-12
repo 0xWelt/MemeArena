@@ -1,12 +1,13 @@
 import { Pool } from 'pg';
 import * as fs from 'fs';
 import * as path from 'path';
+import * as dotenv from 'dotenv';
 
 // 加载环境变量
 const envPath = path.join(process.cwd(), '.env');
 if (fs.existsSync(envPath)) {
   console.log('📋 检测到 .env 文件，加载环境变量');
-  require('dotenv').config({ path: envPath });
+  dotenv.config({ path: envPath });
 } else {
   console.log('⚠️  未检测到 .env 文件，使用默认配置');
 }
@@ -23,16 +24,18 @@ const getConnectionString = () => {
 // 创建数据库连接池（懒加载）
 const createPool = () => {
   const connectionString = getConnectionString();
-  
+
   console.log('🔌 创建数据库连接池:');
   console.log('   DATABASE_URL:', connectionString.replace(/:[^:@]+@/, ':****@'));
   console.log('   连接时间:', new Date().toLocaleString());
-  
+
   return new Pool({
     connectionString,
-    ssl: process.env.DATABASE_URL ? {
-      rejectUnauthorized: false
-    } : false,
+    ssl: process.env.DATABASE_URL
+      ? {
+          rejectUnauthorized: false,
+        }
+      : false,
     connectionTimeoutMillis: 10000, // 10秒连接超时
     idleTimeoutMillis: 30000, // 30秒空闲超时
   });
@@ -43,19 +46,24 @@ export const getDb = async (): Promise<Pool> => {
   if (dbInstance) {
     return dbInstance;
   }
-  
+
   if (connectionPromise) {
     return connectionPromise;
   }
-  
+
   connectionPromise = (async () => {
     try {
       dbInstance = createPool();
       const client = await dbInstance.connect();
-      
+
       console.log('✅ 数据库连接成功');
-      console.log('   连接池状态: 活跃连接数 =', dbInstance.totalCount, ', 空闲连接数 =', dbInstance.idleCount);
-      
+      console.log(
+        '   连接池状态: 活跃连接数 =',
+        dbInstance.totalCount,
+        ', 空闲连接数 =',
+        dbInstance.idleCount,
+      );
+
       // 获取数据库版本信息
       try {
         const result = await client.query('SELECT version()');
@@ -63,7 +71,7 @@ export const getDb = async (): Promise<Pool> => {
       } catch (err: any) {
         console.log('   无法获取版本信息:', err.message);
       }
-      
+
       client.release();
       return dbInstance;
     } catch (err: any) {
@@ -75,7 +83,7 @@ export const getDb = async (): Promise<Pool> => {
       throw err;
     }
   })();
-  
+
   return connectionPromise;
 };
 
@@ -83,7 +91,7 @@ export const getDb = async (): Promise<Pool> => {
 export async function initDatabase() {
   try {
     const db = await getDb();
-    
+
     // 创建 memes 表
     await db.query(`
       CREATE TABLE IF NOT EXISTS memes (
@@ -122,14 +130,11 @@ export async function initDatabase() {
         ['Drake Hotline Bling', 'https://i.imgflip.com/2wifvo.jpg'],
         ['Two Buttons', 'https://i.imgflip.com/1otk96.jpg'],
         ['Change My Mind', 'https://i.imgflip.com/24y43o.jpg'],
-        ['Mocking Spongebob', 'https://i.imgflip.com/1otpo4.jpg']
+        ['Mocking Spongebob', 'https://i.imgflip.com/1otpo4.jpg'],
       ];
 
       for (const [name, cover] of testMemes) {
-        await db.query(
-          'INSERT INTO memes (name, cover) VALUES ($1, $2)',
-          [name, cover]
-        );
+        await db.query('INSERT INTO memes (name, cover) VALUES ($1, $2)', [name, cover]);
       }
     }
 
@@ -145,7 +150,7 @@ const dbProxy = {
   query: async (text: string, params?: any[]) => {
     const db = await getDb();
     return db.query(text, params);
-  }
+  },
 };
 
 export default dbProxy;

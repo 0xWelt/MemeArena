@@ -17,14 +17,14 @@ export function BattleArena({ initialMemes = [] }: BattleArenaProps) {
     try {
       setLoading(true);
       const response = await fetch('/api/battle-pair');
-      
+
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      
+
       const data = await response.json();
       setMemes(data);
-    } catch (error) {
+    } catch {
       // 静默处理错误，用户界面已显示错误状态
     } finally {
       setLoading(false);
@@ -54,11 +54,11 @@ export function BattleArena({ initialMemes = [] }: BattleArenaProps) {
 
       // 重新加载对战组合
       loadBattlePair();
-      
+
       // 触发排行榜更新事件
       window.dispatchEvent(new CustomEvent('leaderboardUpdate'));
     } catch (error) {
-      alert('提交失败: ' + (error as Error).message);
+      alert(`提交失败: ${(error as Error).message}`);
     } finally {
       setSubmitting(false);
     }
@@ -81,9 +81,18 @@ export function BattleArena({ initialMemes = [] }: BattleArenaProps) {
           <div className="space-y-2">
             <p className="text-muted-foreground text-lg font-medium">正在准备对战...</p>
             <div className="flex justify-center space-x-2">
-              <div className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: '0s' }}></div>
-              <div className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-              <div className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+              <div
+                className="w-2 h-2 bg-primary rounded-full animate-bounce"
+                style={{ animationDelay: '0s' }}
+              ></div>
+              <div
+                className="w-2 h-2 bg-primary rounded-full animate-bounce"
+                style={{ animationDelay: '0.1s' }}
+              ></div>
+              <div
+                className="w-2 h-2 bg-primary rounded-full animate-bounce"
+                style={{ animationDelay: '0.2s' }}
+              ></div>
             </div>
           </div>
         </div>
@@ -114,14 +123,14 @@ export function BattleArena({ initialMemes = [] }: BattleArenaProps) {
             showStats={false}
           />
         </div>
-        
+
         {/* 中央对战图标 */}
         <div className="flex-shrink-0 flex items-center justify-center my-8 lg:my-0">
           <div className="text-8xl lg:text-9xl font-bold bg-gradient-to-br from-primary to-secondary bg-clip-text text-transparent opacity-90 animate-pulse">
             ⚔️
           </div>
         </div>
-        
+
         {/* 右侧卡片 */}
         <div className="flex-1 max-w-md">
           <MemeCard

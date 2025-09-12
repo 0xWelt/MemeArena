@@ -11,14 +11,12 @@ export const metadata: Metadata = {
   description: '选择你更喜欢的表情包，帮助建立最权威的 meme 排行榜！',
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="zh-CN" suppressHydrationWarning className="scroll-smooth">
-      <body className={`${inter.className} bg-background text-foreground antialiased selection:bg-primary selection:text-primary-foreground`}>
+      <body
+        className={`${inter.className} bg-background text-foreground antialiased selection:bg-primary selection:text-primary-foreground`}
+      >
         <ThemeProvider>
           <Header />
           <main className="pt-16">{children}</main>

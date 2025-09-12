@@ -5,16 +5,16 @@ const { Pool } = require('pg');
 async function resetDatabase() {
   const db: any = new Pool({
     connectionString: process.env.DATABASE_URL || 'postgresql://localhost:5432/memearena',
-    ssl: process.env.DATABASE_URL ? { rejectUnauthorized: false } : false
+    ssl: process.env.DATABASE_URL ? { rejectUnauthorized: false } : false,
   });
 
   try {
     console.log('🗑️  清空现有数据并重新创建表结构...');
-    
+
     // 删除现有表（如果存在）
     await db.query('DROP TABLE IF EXISTS battles');
     await db.query('DROP TABLE IF EXISTS memes');
-    
+
     // 重新创建 memes 表，包含 uid 字段
     await db.query(`
       CREATE TABLE memes (
@@ -44,10 +44,9 @@ async function resetDatabase() {
         FOREIGN KEY (winner_id) REFERENCES memes (id)
       )
     `);
-    
+
     console.log('✅ 数据库重置完成，新表结构已创建');
     console.log('📋 新表包含 uid 字段，用于文件路径唯一标识');
-    
   } catch (error) {
     console.error('❌ 重置失败:', error);
     throw error;

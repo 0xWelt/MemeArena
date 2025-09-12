@@ -7,9 +7,6 @@ export async function POST() {
     return NextResponse.json({ message: '数据库初始化完成' });
   } catch (error) {
     console.error('数据库初始化失败:', error);
-    return NextResponse.json(
-      { error: '数据库初始化失败' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: '数据库初始化失败' }, { status: 500 });
   }
 }

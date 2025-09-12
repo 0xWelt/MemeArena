@@ -4,16 +4,13 @@ import { useBattleQueue } from '@/hooks/use-battle-queue';
 import { MemeCard } from './meme-card';
 
 export function BattleArena() {
-  const {
-    currentPair,
-    queue,
-    isLoading,
-    isSubmitting,
-    submitBattle,
-    loadMorePairs,
-  } = useBattleQueue();
+  const { currentPair, queue, isLoading, isSubmitting, submitBattle, loadMorePairs } =
+    useBattleQueue();
 
-  if (isLoading && currentPair.length === 0) {
+  console.log('🎮 BattleArena 渲染:', { currentPairLength: currentPair.length, isLoading, queueLength: queue.length });
+
+  // 更精确的加载状态判断
+  if (isLoading) {
     return (
       <div className="flex justify-center items-center h-96">
         <div className="text-center space-y-6">
@@ -45,12 +42,19 @@ export function BattleArena() {
     );
   }
 
-  if (currentPair.length !== 2) {
+  // 如果没有对战组合且不在加载中，显示错误
+  if (currentPair.length === 0 && !isLoading) {
     return (
       <div className="text-center text-destructive p-8 bg-destructive/10 rounded-xl border border-destructive/20">
         <div className="text-6xl mb-4">😅</div>
         <h3 className="text-xl font-semibold mb-2">加载失败</h3>
         <p>无法加载对战组合，请刷新页面重试</p>
+        <button 
+          onClick={() => window.location.reload()} 
+          className="mt-4 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
+        >
+          刷新页面
+        </button>
       </div>
     );
   }

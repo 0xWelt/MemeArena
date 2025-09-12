@@ -17,7 +17,7 @@ export function useLeaderboard(initialMemes: ApiMeme[] = []): UseLeaderboardRetu
   const [isLoading, setIsLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
-  
+
   const refreshTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const abortControllerRef = useRef<AbortController | null>(null);
   const autoRefreshIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -37,7 +37,7 @@ export function useLeaderboard(initialMemes: ApiMeme[] = []): UseLeaderboardRetu
     }
 
     // 设置新的定时器实现防抖
-    return new Promise<void>((resolve) => {
+    return new Promise<void>(resolve => {
       refreshTimeoutRef.current = setTimeout(async () => {
         // 如果已经在刷新，跳过
         if (isRefreshing) {
@@ -56,7 +56,7 @@ export function useLeaderboard(initialMemes: ApiMeme[] = []): UseLeaderboardRetu
         try {
           setIsRefreshing(true);
           const data = await fetchLeaderboard(abortControllerRef.current.signal);
-          
+
           setMemes(data);
           setLastUpdated(new Date());
         } catch (error) {

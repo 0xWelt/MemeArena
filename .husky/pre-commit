@@ -1,35 +1,29 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-echo "🔍 Running pre-commit checks..."
+echo "🔍 Running pre-commit checks (same as CI)..."
 
-# 1. 先格式化，确保代码风格一致
-echo "💅 Formatting code..."
-npm run format
-
-# 2. TypeScript 类型检查
+# 1. TypeScript type check
 echo "📝 Type checking..."
 npm run type-check || {
   echo "❌ TypeScript type check failed"
   exit 1
 }
 
-# 3. ESLint 检查（自动修复错误，只阻止错误级别的失败）
-echo "🔧 Linting and auto-fixing..."
-npm run lint:fix || {
-  echo "❌ ESLint auto-fix failed"
+# 2. ESLint check (strict mode - no auto-fix, same as CI)
+echo "🔧 Linting..."
+npm run lint || {
+  echo "❌ ESLint check failed"
+  echo "💡 Run 'npm run lint:fix' to auto-fix errors, or fix manually"
   exit 1
 }
 
-# 4. 再次格式化，确保 lint 修复后的代码格式正确
-echo "💅 Final formatting check..."
-npm run format
-
-# 5. Lint-staged（只处理暂存的文件）
-echo "🎯 Running lint-staged..."
-npx lint-staged || {
-  echo "❌ Lint-staged failed"
+# 3. Prettier format check (strict mode - no auto-fix, same as CI)
+echo "💅 Formatting check..."
+npm run format:check || {
+  echo "❌ Prettier format check failed"
+  echo "💡 Run 'npm run format' to auto-fix formatting"
   exit 1
 }
 
-echo "✅ All checks passed!"
+echo "✅ All checks passed! Ready for commit."

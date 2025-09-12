@@ -4,13 +4,7 @@ import { useLeaderboard } from '@/hooks/use-leaderboard';
 import { Leaderboard } from './leaderboard';
 
 export function ClientLeaderboard() {
-  const {
-    memes,
-    isLoading,
-    isRefreshing,
-    refresh,
-    lastUpdated,
-  } = useLeaderboard();
+  const { memes, isLoading, isRefreshing, refresh, lastUpdated } = useLeaderboard();
 
   if (isLoading && memes.length === 0) {
     return (
@@ -65,7 +59,7 @@ export function ClientLeaderboard() {
           🏆 排行榜
         </h2>
         <p className="text-muted-foreground mt-2">基于 ELO 评分系统的实时排名</p>
-        
+
         {/* 状态指示器 */}
         <div className="flex items-center justify-center gap-4 mt-4 text-sm text-muted-foreground">
           {isRefreshing && (

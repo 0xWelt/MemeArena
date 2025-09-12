@@ -9,7 +9,7 @@ export function BattleArena() {
 
   console.log('🎮 BattleArena 渲染:', { currentPairLength: currentPair.length, isLoading, queueLength: queue.length });
 
-  // 更精确的加载状态判断
+  // 显示加载状态
   if (isLoading) {
     return (
       <div className="flex justify-center items-center h-96">
@@ -42,8 +42,8 @@ export function BattleArena() {
     );
   }
 
-  // 如果没有对战组合且不在加载中，显示错误
-  if (currentPair.length === 0 && !isLoading) {
+  // 如果没有对战组合，显示错误
+  if (currentPair.length === 0) {
     return (
       <div className="text-center text-destructive p-8 bg-destructive/10 rounded-xl border border-destructive/20">
         <div className="text-6xl mb-4">😅</div>

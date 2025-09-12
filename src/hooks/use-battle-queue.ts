@@ -19,7 +19,7 @@ export function useBattleQueue(initialPairs: ApiMeme[][] = []): UseBattleQueueRe
   const [state, setState] = useState<BattleQueueState>({
     currentPair: [],
     queue: initialPairs,
-    isLoading: true,
+    isLoading: initialPairs.length === 0, // 如果没有初始数据，才显示加载状态
     isSubmitting: false,
   });
 
@@ -196,10 +196,10 @@ export function useBattleQueue(initialPairs: ApiMeme[][] = []): UseBattleQueueRe
   // 初始化
   useEffect(() => {
     console.log('🚀 BattleQueue 初始化...');
-    console.log('📊 初始状态:', { currentPairLength: state.currentPair.length, queueLength: state.queue.length });
+    console.log('📊 初始状态:', { currentPairLength: state.currentPair.length, queueLength: state.queue.length, isLoading: state.isLoading });
     
-    // 如果已经有初始数据，直接使用
-    if (state.queue.length > 0) {
+    // 只在组件挂载时执行一次初始化
+    if (initialPairs.length > 0) {
       console.log('✅ 使用初始队列数据');
       setState(prev => ({
         ...prev,
@@ -208,10 +208,10 @@ export function useBattleQueue(initialPairs: ApiMeme[][] = []): UseBattleQueueRe
         isLoading: false,
       }));
     } else {
-      console.log('🔄 加载更多对战组合...');
+      console.log('🔄 没有初始数据，加载对战组合...');
       loadMorePairs();
     }
-  }, []);
+  }, []); // 空依赖数组，确保只执行一次
 
   // 清理函数
   useEffect(() => {

@@ -12,7 +12,9 @@ export function Header() {
         <div className="flex items-center gap-4 flex-1">
           {/* Logo 和标题 */}
           <Link href="/" className="flex items-center gap-3 group">
-            <div className="text-2xl group-hover:scale-110 transition-transform">🎭</div>
+            <div className="text-2xl group-hover:scale-110 transition-transform inline-block emoji">
+              🎭
+            </div>
             <h1 className="text-lg font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
               Meme Arena
             </h1>

@@ -96,11 +96,54 @@
   border-color: hsl(var(--border));
 }
 
+/* 全局 emoji 支持 */
+* {
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif,
+    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+}
+
+/* ===== Emoji 样式修复 ===== */
+.emoji {
+  font-family:
+    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji', sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  display: inline-block;
+  vertical-align: baseline;
+  /* 确保 emoji 使用系统默认颜色 */
+  color: unset !important;
+  background: none !important;
+  -webkit-background-clip: unset !important;
+  background-clip: unset !important;
+  text-fill-color: unset !important;
+  -webkit-text-fill-color: unset !important;
+}
+
+/* 防止 emoji 被渐变文字效果影响 - 更严格的选择器 */
+.bg-clip-text.text-transparent .emoji,
+.bg-clip-text.text-transparent ~ .emoji,
+*:has(> .bg-clip-text.text-transparent) .emoji,
+h1 .emoji,
+h2 .emoji,
+h3 .emoji,
+h4 .emoji,
+h5 .emoji,
+h6 .emoji {
+  background: none !important;
+  -webkit-background-clip: unset !important;
+  background-clip: unset !important;
+  color: inherit !important;
+  text-fill-color: unset !important;
+  -webkit-text-fill-color: unset !important;
+}
+
 body {
   color: hsl(var(--foreground));
   background: hsl(var(--background));
   font-family:
-    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif,
+    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   transition:
     background-color 0.3s ease,
     color 0.3s ease;

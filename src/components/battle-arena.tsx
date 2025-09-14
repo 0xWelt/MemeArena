@@ -21,7 +21,7 @@ export function BattleArena() {
           <div className="relative">
             <div className="animate-spin rounded-full h-16 w-16 border-4 border-primary/20 border-t-primary mx-auto"></div>
             <div className="absolute inset-0 flex items-center justify-center">
-              <div className="text-2xl">🎭</div>
+              <div className="text-2xl emoji">🎭</div>
             </div>
           </div>
           <div className="space-y-2">
@@ -50,7 +50,7 @@ export function BattleArena() {
   if (currentPair.length === 0) {
     return (
       <div className="text-center text-destructive p-8 bg-destructive/10 rounded-xl border border-destructive/20">
-        <div className="text-6xl mb-4">😅</div>
+        <div className="text-6xl mb-4 emoji">😅</div>
         <h3 className="text-xl font-semibold mb-2">加载失败</h3>
         <p>无法加载对战组合，请刷新页面重试</p>
         <button
@@ -79,8 +79,8 @@ export function BattleArena() {
 
         {/* 中央对战图标 */}
         <div className="flex-shrink-0 flex items-center justify-center my-8 lg:my-0">
-          <div className="text-8xl lg:text-9xl font-bold bg-gradient-to-br from-primary to-secondary bg-clip-text text-transparent opacity-90 animate-pulse">
-            ⚔️
+          <div className="text-8xl lg:text-9xl font-bold opacity-90 animate-pulse">
+            <span className="emoji">⚔️</span>
           </div>
         </div>
 

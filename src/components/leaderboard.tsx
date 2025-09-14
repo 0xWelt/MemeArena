@@ -23,11 +23,11 @@ export function Leaderboard({ memes }: LeaderboardProps) {
   const getRankIcon = (index: number) => {
     switch (index) {
       case 0:
-        return '🥇';
+        return <span className="emoji">🥇</span>;
       case 1:
-        return '🥈';
+        return <span className="emoji">🥈</span>;
       case 2:
-        return '🥉';
+        return <span className="emoji">🥉</span>;
       default:
         return `#${index + 1}`;
     }
@@ -35,14 +35,6 @@ export function Leaderboard({ memes }: LeaderboardProps) {
 
   return (
     <div className="space-y-6">
-      {/* 排行榜标题 */}
-      <div className="text-center space-y-2">
-        <h2 className="text-3xl font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-          🏆 表情包排行榜
-        </h2>
-        <p className="text-muted-foreground">基于 ELO 评分系统的权威排名</p>
-      </div>
-
       {/* 排行榜列表 */}
       <div className="space-y-3">
         {memes.map((meme, index) => (
@@ -58,7 +50,7 @@ export function Leaderboard({ memes }: LeaderboardProps) {
             {/* 排名和图标 */}
             <div className="flex items-center gap-6">
               <div className="flex items-center gap-3">
-                <div className="text-2xl font-bold">{getRankIcon(index)}</div>
+                <div className="text-2xl font-bold emoji">{getRankIcon(index)}</div>
                 <div className="text-sm text-muted-foreground">第 {index + 1} 名</div>
               </div>
 
@@ -127,11 +119,6 @@ export function Leaderboard({ memes }: LeaderboardProps) {
             </div>
           </div>
         ))}
-      </div>
-
-      {/* 底部说明 */}
-      <div className="text-center text-muted-foreground text-sm mt-8">
-        <p>💡 基于 ELO 评分算法，胜率越高的表情包排名越靠前</p>
       </div>
     </div>
   );

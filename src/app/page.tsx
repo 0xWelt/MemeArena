@@ -20,8 +20,11 @@ export default function Home() {
       <div className="relative container mx-auto px-4 py-8">
         {/* 主要内容区域 */}
         <div className="text-center mb-12 animate-fade-in-up">
-          <h1 className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent mb-4">
-            🎭 Meme Arena
+          <h1 className="text-5xl md:text-6xl font-bold mb-4">
+            <span className="inline-block emoji text-5xl md:text-6xl">🎭</span>
+            <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent ml-2">
+              Meme Arena
+            </span>
           </h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
             选择你更喜欢的表情包，帮助建立最权威的表情包排行榜

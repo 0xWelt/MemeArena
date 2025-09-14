@@ -16,6 +16,7 @@ export default [
       'coverage/**',
       '*.config.js',
       'next-env.d.ts',
+      'jest.setup.js',
     ],
   },
   js.configs.recommended,
@@ -91,6 +92,19 @@ export default [
     files: ['src/components/*.tsx', 'src/app/api/*.ts'],
     rules: {
       '@next/next/no-img-element': 'off',
+    },
+  },
+  // 测试文件配置
+  {
+    files: ['tests/**/*.{js,jsx,ts,tsx}'],
+    languageOptions: {
+      globals: {
+        ...globals.jest,
+      },
+    },
+    rules: {
+      'no-console': 'off',
+      '@typescript-eslint/no-unused-vars': 'off',
     },
   },
 ];

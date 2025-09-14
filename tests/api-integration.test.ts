@@ -17,7 +17,7 @@ function createMockRequest() {
   return {
     method: 'GET',
     headers: new Headers(),
-    url: 'http://localhost:3000/api/battle-pair'
+    url: 'http://localhost:3000/api/battle-pair',
   };
 }
 
@@ -37,11 +37,11 @@ describe('主程序 API 集成测试', () => {
     try {
       const client = await pool.connect();
       console.log('✅ 数据库连接成功');
-      
+
       // 获取数据库信息
       const result = await client.query('SELECT COUNT(*) as count FROM memes');
       console.log(`📊 数据库中meme数量: ${result.rows[0].count}`);
-      
+
       client.release();
     } catch (error) {
       console.error('❌ 数据库连接失败:', error);
@@ -65,7 +65,7 @@ describe('主程序 API 集成测试', () => {
   test('主程序获取对战pair查询正常', async () => {
     // 使用与主程序完全相同的查询
     const result = await pool.query(
-      'SELECT id, name, cover, description, elo_score, wins, losses FROM memes ORDER BY RANDOM() LIMIT 2'
+      'SELECT id, name, cover, description, elo_score, wins, losses FROM memes ORDER BY RANDOM() LIMIT 2',
     );
 
     console.log(`获取到 ${result.rows.length} 个meme用于对战`);
@@ -75,8 +75,13 @@ describe('主程序 API 集成测试', () => {
 
     // 验证数据格式与主程序期望的一致
     result.rows.forEach((meme, index) => {
-      console.log(`Meme ${index + 1}:`, meme.name, '- 图片URL:', `${meme.cover?.substring(0, 50)}...`);
-      
+      console.log(
+        `Meme ${index + 1}:`,
+        meme.name,
+        '- 图片URL:',
+        `${meme.cover?.substring(0, 50)}...`,
+      );
+
       // 验证所有字段都存在且类型正确
       expect(typeof meme.id).toBe('number');
       expect(typeof meme.name).toBe('string');
@@ -84,7 +89,7 @@ describe('主程序 API 集成测试', () => {
       expect(typeof meme.elo_score).toBe('number');
       expect(typeof meme.wins).toBe('number');
       expect(typeof meme.losses).toBe('number');
-      
+
       // 验证必要字段不为空
       expect(meme.name).toBeTruthy();
       expect(meme.cover).toBeTruthy();
@@ -104,7 +109,7 @@ describe('主程序 API 集成测试', () => {
 
     for (let i = 0; i < iterations; i++) {
       const result = await pool.query(
-        'SELECT id, name, cover, description, elo_score, wins, losses FROM memes ORDER BY RANDOM() LIMIT 2'
+        'SELECT id, name, cover, description, elo_score, wins, losses FROM memes ORDER BY RANDOM() LIMIT 2',
       );
       results.push(result);
     }
@@ -149,7 +154,7 @@ describe('主程序 API 集成测试', () => {
 
     const columnNames = columns.rows.map(col => col.column_name);
     const requiredColumns = ['id', 'name', 'cover', 'elo_score', 'wins', 'losses'];
-    
+
     requiredColumns.forEach(col => {
       expect(columnNames).toContain(col);
     });
@@ -161,24 +166,29 @@ describe('主程序 API 集成测试', () => {
     // 模拟主程序中的完整流程
     try {
       console.log('🎯 模拟获取对战组合...');
-      
+
       // 使用与主程序完全相同的数据库调用
       const result = await pool.query(
-        'SELECT id, name, cover, description, elo_score, wins, losses FROM memes ORDER BY RANDOM() LIMIT 2'
+        'SELECT id, name, cover, description, elo_score, wins, losses FROM memes ORDER BY RANDOM() LIMIT 2',
       );
 
       console.log('📊 查询结果:', result.rows.length, '条记录');
       result.rows.forEach((row: any, index: number) => {
-        console.log(`   ${index + 1}.`, row.name, '- 图片URL:', `${row.cover?.substring(0, 50)}...`);
+        console.log(
+          `   ${index + 1}.`,
+          row.name,
+          '- 图片URL:',
+          `${row.cover?.substring(0, 50)}...`,
+        );
       });
 
       // 模拟构造响应（类似 NextResponse.json）
       const responseData = result.rows;
-      
+
       // 验证响应数据格式
       expect(Array.isArray(responseData)).toBe(true);
       expect(responseData).toHaveLength(2);
-      
+
       // 验证数据格式正确性
       responseData.forEach(meme => {
         expect(meme).toHaveProperty('id');
@@ -190,7 +200,6 @@ describe('主程序 API 集成测试', () => {
       });
 
       console.log('✅ 完整API流程测试通过');
-      
     } catch (error) {
       console.error('❌ 获取对战组合失败:', error);
       throw error;

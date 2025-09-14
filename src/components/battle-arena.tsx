@@ -7,7 +7,11 @@ export function BattleArena() {
   const { currentPair, queue, isLoading, isSubmitting, submitBattle, loadMorePairs } =
     useBattleQueue();
 
-  console.log('🎮 BattleArena 渲染:', { currentPairLength: currentPair.length, isLoading, queueLength: queue.length });
+  console.log('🎮 BattleArena 渲染:', {
+    currentPairLength: currentPair.length,
+    isLoading,
+    queueLength: queue.length,
+  });
 
   // 显示加载状态
   if (isLoading) {
@@ -49,8 +53,8 @@ export function BattleArena() {
         <div className="text-6xl mb-4">😅</div>
         <h3 className="text-xl font-semibold mb-2">加载失败</h3>
         <p>无法加载对战组合，请刷新页面重试</p>
-        <button 
-          onClick={() => window.location.reload()} 
+        <button
+          onClick={() => window.location.reload()}
           className="mt-4 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
         >
           刷新页面

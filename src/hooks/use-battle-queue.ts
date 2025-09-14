@@ -40,7 +40,7 @@ export function useBattleQueue(initialPairs: ApiMeme[][] = []): UseBattleQueueRe
           console.log(`📡 请求第 ${i + 1} 组对战...`);
           const response = await fetch('/api/battle-pair');
           console.log(`📊 第 ${i + 1} 组响应状态:`, response.status);
-          
+
           if (!response.ok) {
             console.error(`❌ 第 ${i + 1} 组请求失败:`, response.status);
             throw new Error(`HTTP error! status: ${response.status}`);
@@ -48,7 +48,7 @@ export function useBattleQueue(initialPairs: ApiMeme[][] = []): UseBattleQueueRe
 
           const data = await response.json();
           console.log(`📦 第 ${i + 1} 组数据:`, data.length, '个表情包');
-          
+
           if (data.length === 2) {
             pairs.push(data);
             console.log(`✅ 第 ${i + 1} 组添加成功`);
@@ -196,8 +196,12 @@ export function useBattleQueue(initialPairs: ApiMeme[][] = []): UseBattleQueueRe
   // 初始化
   useEffect(() => {
     console.log('🚀 BattleQueue 初始化...');
-    console.log('📊 初始状态:', { currentPairLength: state.currentPair.length, queueLength: state.queue.length, isLoading: state.isLoading });
-    
+    console.log('📊 初始状态:', {
+      currentPairLength: state.currentPair.length,
+      queueLength: state.queue.length,
+      isLoading: state.isLoading,
+    });
+
     // 只在组件挂载时执行一次初始化
     if (initialPairs.length > 0) {
       console.log('✅ 使用初始队列数据');

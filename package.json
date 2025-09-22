@@ -35,7 +35,7 @@
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "autoprefixer": "^10.4.16",
-    "eslint": "^9.35.0",
+    "eslint": "^9.36.0",
     "eslint-config-next": "15.5.3",
     "globals": "^16.4.0",
     "husky": "^8.0.3",
